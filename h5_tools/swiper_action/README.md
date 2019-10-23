@@ -47,7 +47,8 @@ export default {
          startX: 0, // 触摸的点的x轴数值
          screenRate: 1, // 屏幕宽是750的比率,
          moveLeftValue: 0,// 父元素向左移动的距离
-         ...Object.assign(defaultValue, this.options)
+         ...defaultValue,//默认值
+         ...this.options
       };
    },
    mounted() {
