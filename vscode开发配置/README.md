@@ -31,6 +31,7 @@
    ```js
    import { method } from '@/utils/common';
    ```
+   ![vscode-js-import插件](https://jeno.oss-cn-shanghai.aliyuncs.com/web/vscode/auto_import.gif)
 4. 在根目录添加配置`jsconfig.js`文件，
    * 可以实现别名引入的**方法**的定义**跳转**，
    * 可以实现使用别名引入组件
