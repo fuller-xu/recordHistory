@@ -10,15 +10,22 @@
         "@": "${cwd}/src"
     }
     ```
-3. `vscode-js-import` 配置自动引入，同时可以配置别名路径的引入
+3. `vscode-js-import` 配置自动引入，同时，
+   * 可以配置别名路径的引入
+   * 快捷键`ctrl+alt+H`选择引入文件
+   * 可以自动引入export default 
    ```json
     "js-import.root": "src",
     "js-import.alias": {
         "@": "src/",
         "@/utils": "src/utils",
     },
-    // 扫描排除文件
-    "js-import.excludeFilesToScan": "**/dist/**",
+    //扫描文件
+    "js-import.filesToScan": "**/*.{jsx,js,tsx,ts,vue}",
+    //扫描排除文件
+    "js-import.excludeFilesToScan": "**/dist/**", 
+    //import default 后缀
+    "js-import.plainFileSuffixWithDefaultMember": "json,js,vue", 
    ```
    输入方法名，自动导入效果：
    ```js
