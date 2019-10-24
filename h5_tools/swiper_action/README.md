@@ -47,7 +47,7 @@ export default {
          startX: 0, // 触摸的点的x轴数值
          screenRate: 1, // 屏幕宽是750的比率,
          moveLeftValue: 0,// 父元素向左移动的距离
-         ...defaultValue,//默认值
+         ...defaultValue,// 默认值
          ...this.options
       };
    },
@@ -56,6 +56,7 @@ export default {
       const device = api.getSystemInfoSync();
       this.screenRate = device.screenWidth / 750;
       //   console.log(this.screenRate);
+      this.needMoveDistance = -clearUnit(this.moveDistance) * this.screenRate + PX_UNIT;
    },
    methods: {
       touchstart(e) {
@@ -66,9 +67,9 @@ export default {
       touchmove(e) {
          let touch = e.touches[0] || e.changedTouches[0];
          // 如果向左滑动，就向左移动,并且左边距（left值）不等于需要移动的距离。
-         let needMoveDistance = -clearUnit(this.moveDistance) * this.screenRate + PX_UNIT;
-         if (touch.pageX - this.startX < 0 && this.moveLeftValue !== needMoveDistance) {
-            this.moveLeftValue = needMoveDistance;
+         
+         if (touch.pageX - this.startX < 0 && this.moveLeftValue !== this.needMoveDistance) {
+            this.moveLeftValue = this.needMoveDistance;
             // 向父组件触发打开事件，方便父组件去关闭其他子组件
             this.$emit('opened', this.identity);
          }
