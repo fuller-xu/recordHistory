@@ -6,7 +6,9 @@
 
 ### 封装组件
 
-1. 实现左滑的方式很简单，父元素下，多个子元素采用不换行的方式布局，并且父元素使用超出区域隐藏，将操作区域隐藏于右侧。
+>实现左滑的方式：
+
+1. 父元素下，多个子元素采用不换行的方式布局，并且父元素使用超出区域隐藏，将操作区域隐藏于右侧。
 2. 通过判断用户的触摸移动事件，去动态修改父元素的left值，如果用户手势是向左滑动，就将父元素向左移动指定距离。
 3. 最后根据需求将移动后的元素归位。
 
@@ -14,7 +16,7 @@
 <template>
    <view
       class="swiper-action"
-      :style="{ left: moveLeftValue, transition: `left ${time}ms` }"
+      :style="{ transform: `translateX(${moveLeftValue})`, transition: `transform ${time}ms` }"
       @touchstart="touchstart($event)"
       @touchmove="touchmove($event)"
    >
@@ -44,10 +46,11 @@ export default {
          time: 350 // 毫秒
       };
       return {
-         startX: 0, // 触摸的点的x轴数值
+         startX: 0,
+         startY: 0,
          screenRate: 1, // 屏幕宽是750的比率,
-         moveLeftValue: 0,// 父元素向左移动的距离
-         ...defaultValue,// 默认值
+         moveLeftValue: 0,
+         ...defaultValue,
          ...this.options
       };
    },
@@ -56,18 +59,19 @@ export default {
       const device = api.getSystemInfoSync();
       this.screenRate = device.screenWidth / 750;
       //   console.log(this.screenRate);
+      // 需要移动的距离
       this.needMoveDistance = -clearUnit(this.moveDistance) * this.screenRate + PX_UNIT;
    },
    methods: {
       touchstart(e) {
          let touch = e.touches[0] || e.changedTouches[0];
          this.startX = touch.pageX;
+         this.startY = touch.pageY;
          this.moveLeftValue || (this.moveLeftValue = 0);
       },
       touchmove(e) {
          let touch = e.touches[0] || e.changedTouches[0];
          // 如果向左滑动，就向左移动,并且左边距（left值）不等于需要移动的距离。
-         
          if (touch.pageX - this.startX < 0 && this.moveLeftValue !== this.needMoveDistance) {
             this.moveLeftValue = this.needMoveDistance;
             // 向父组件触发打开事件，方便父组件去关闭其他子组件
