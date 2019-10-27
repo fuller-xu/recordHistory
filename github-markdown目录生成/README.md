@@ -20,6 +20,5 @@
     ```bash
     ./gh-md-toc.exe README.md
     ```
-    ![图片]()
 3. 将内容复制到原来的README.md文件的头部即可
    ![图片](https://jeno.oss-cn-shanghai.aliyuncs.com/web/github/auto_generate_md_toc.png)

@@ -9,7 +9,7 @@
 >实现左滑的方式：
 
 1. 父元素下，多个子元素采用不换行的方式布局，并且父元素使用超出区域隐藏，将操作区域隐藏于右侧。
-2. 通过判断用户的触摸移动事件，去动态修改父元素的left值，如果用户手势是向左滑动，就将父元素向左移动指定距离。
+2. 通过判断用户的触摸移动事件，去动态修改父元素的向左移的值，如果用户手势是向左滑动，就将父元素向左移动指定距离。
 3. 最后根据需求将移动后的元素归位。
 
 ```js
@@ -71,7 +71,7 @@ export default {
       },
       touchmove(e) {
          let touch = e.touches[0] || e.changedTouches[0];
-         // 如果向左滑动，就向左移动,并且左边距（left值）不等于需要移动的距离。
+         // 如果向左滑动，就向左移动,并且移动的值不等于需要移动的距离（移动值已经赋值过了，不能重复赋值）。
          if (touch.pageX - this.startX < 0 && this.moveLeftValue !== this.needMoveDistance) {
             this.moveLeftValue = this.needMoveDistance;
             // 向父组件触发打开事件，方便父组件去关闭其他子组件
