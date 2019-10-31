@@ -99,8 +99,11 @@ export default class CodeGun {
 ```js
 import CodeGun from '@/utils/gun.js';
 
+// 开启监听扫码枪输入事件
 this.gun = new CodeGun(code => {
     console.log(code);
 })
+// 手动取消监听
+this.gun.removeListener();
 
 ```
