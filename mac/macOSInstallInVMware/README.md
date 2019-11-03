@@ -1,10 +1,10 @@
-   * [VMware Workstation Pro 15.5 安装 MacOS 10.14](#vmware-workstation-pro-155-安装-macos-1014)
-         * [1.首先做好提前准备的安装包](#1首先做好提前准备的安装包)
-         * [2.安装VMware](#2安装vmware)
-         * [3.解压UnLocker工具](#3解压unlocker工具)
-         * [4.创建虚拟机，修改虚拟系统文件设置](#4创建虚拟机修改虚拟系统文件设置)
-         * [5.修改虚拟机设置](#5修改虚拟机设置)
-         * [6.启动虚拟机](#6启动虚拟机)
+- [VMware Workstation Pro 15.5 安装 MacOS 10.14](#vmware-workstation-pro-155-%e5%ae%89%e8%a3%85-macos-1014)
+    - [1.首先做好提前准备的安装包](#1%e9%a6%96%e5%85%88%e5%81%9a%e5%a5%bd%e6%8f%90%e5%89%8d%e5%87%86%e5%a4%87%e7%9a%84%e5%ae%89%e8%a3%85%e5%8c%85)
+    - [2.安装VMware](#2%e5%ae%89%e8%a3%85vmware)
+    - [3.解压UnLocker工具](#3%e8%a7%a3%e5%8e%8bunlocker%e5%b7%a5%e5%85%b7)
+    - [4.创建虚拟机，修改虚拟系统文件设置](#4%e5%88%9b%e5%bb%ba%e8%99%9a%e6%8b%9f%e6%9c%ba%e4%bf%ae%e6%94%b9%e8%99%9a%e6%8b%9f%e7%b3%bb%e7%bb%9f%e6%96%87%e4%bb%b6%e8%ae%be%e7%bd%ae)
+    - [5.修改虚拟机设置](#5%e4%bf%ae%e6%94%b9%e8%99%9a%e6%8b%9f%e6%9c%ba%e8%ae%be%e7%bd%ae)
+    - [6.启动虚拟机](#6%e5%90%af%e5%8a%a8%e8%99%9a%e6%8b%9f%e6%9c%ba)
 
 
 # VMware Workstation Pro 15.5 安装 MacOS 10.14
