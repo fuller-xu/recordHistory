@@ -4,7 +4,10 @@
 
 # 自动生成Github markdown文件目录（Windows版）
 
+> Mac下使用方法[参考链接](https://github.com/ekalinin/github-markdown-toc)
+
 > 生成目录结构的方式有多种，这里只介绍一种`gh-md-toc`工具，可以在`Windows`平台上使用，用法简单，其他Linux、Mac平台也有类似的工具。
+
 
 ### 下载`gh-md-toc`工具
 
