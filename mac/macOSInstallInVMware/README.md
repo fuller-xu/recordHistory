@@ -1,4 +1,3 @@
-<!--ts-->
    * [VMware Workstation Pro 15.5 安装 MacOS 10.14](#vmware-workstation-pro-155-安装-macos-1014)
          * [1.首先做好提前准备的安装包](#1首先做好提前准备的安装包)
          * [2.安装VMware](#2安装vmware)
@@ -7,9 +6,7 @@
          * [5.修改虚拟机设置](#5修改虚拟机设置)
          * [6.启动虚拟机](#6启动虚拟机)
 
-<!-- Added by: xufei, at: 2019年11月 3日 星期日 14时33分36秒 CST -->
 
-<!--te-->
 # VMware Workstation Pro 15.5 安装 MacOS 10.14
 
 ### 1.首先做好提前准备的安装包
