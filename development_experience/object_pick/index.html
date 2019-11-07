@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script type="module">
+            // 测试环境 谷歌浏览器版本77.0.3865.90，有的浏览器不支持class 的定义实例属性。
+            import ProductBean from "./bean/ProductBean.js";
+            import mock from "./mock.js";
+            import { formatMapperData } from "./ProductMapper.js";
+            (() => {
+                // 元数据
+                let data = mock.data;
+                // 根据class定义，过滤不必要的字段
+                let result = formatMapperData(data, ProductBean);
+                console.log(result);
+            })();
+        </script>
+    </body>
+</html>
