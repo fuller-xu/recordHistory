@@ -14,12 +14,10 @@ export const formatMapperData = (data, classType) => {
     //    classType.call(instance);
     // 上面两行等同于下面的一行
     let instance = Reflect.construct(classType, []);
-    // const properties = Object.getOwnPropertyNames(instance);
-    const properties = Object.keys(instance);
     if (Array.isArray(data)) {
-        return data.map(item => filterField(item, instance, properties));
+        return data.map(item => filterField(item, instance));
     } else {
-        return filterField(data, instance, properties);
+        return filterField(data, instance);
     }
 };
 
@@ -27,9 +25,10 @@ export const formatMapperData = (data, classType) => {
  * 返回properties数组中的字段的对象
  * @param {Object} obj 对象数据
  * @param {Object} instance 对象bean空实例
- * @param {Array} properties 对象实例的属性
  */
-export const filterField = (obj, instance, properties) => {
+export const filterField = (obj, instance) => {
+    const properties = Object.keys(instance);
+    // const properties = Object.getOwnPropertyNames(instance);
     let result = Object.create(null);
     properties.forEach(field => {
         // 首先判断对象的属性是否还是个对象，如果是，就获取该属性值类型的方法，再根据类型筛选
