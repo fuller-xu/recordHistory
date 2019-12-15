@@ -228,7 +228,7 @@ npm i sass-loader node-sass -D
     rules: [
       {
         test: /\.s[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader"]
+        use: ["vue-style-loader", "css-loader", "sass-loader"]
       }
     ];
   }
@@ -252,7 +252,7 @@ npm i less less-loader -D
     rules: [
       {
         test: /\.less$/,
-        use: ["style-loader", "css-loader", "less-loader"]
+        use: ["vue-style-loader", "css-loader", "less-loader"]
       }
     ];
   }
