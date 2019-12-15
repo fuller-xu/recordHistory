@@ -1,2 +1,5 @@
 *.md.orig.*
 *.md.toc.*
+node_modules/
+.DS_Store
+dist/
