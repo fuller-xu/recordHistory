@@ -26,12 +26,25 @@
     - [3.5 安装 less-loader](#35-%e5%ae%89%e8%a3%85-less-loader)
       - [3.5.1 安装 less-loader 所需依赖](#351-%e5%ae%89%e8%a3%85-less-loader-%e6%89%80%e9%9c%80%e4%be%9d%e8%b5%96)
       - [3.5.2 less-loader 规则配置](#352-less-loader-%e8%a7%84%e5%88%99%e9%85%8d%e7%bd%ae)
+    - [3.6 安装 file-loader](#36-%e5%ae%89%e8%a3%85-file-loader)
+      - [3.6.1 安装 file-loader 所需依赖](#361-%e5%ae%89%e8%a3%85-file-loader-%e6%89%80%e9%9c%80%e4%be%9d%e8%b5%96)
+      - [3.6.2 file-loader 规则配置](#362-file-loader-%e8%a7%84%e5%88%99%e9%85%8d%e7%bd%ae)
   - [4. 安装常用的 Plugins](#4-%e5%ae%89%e8%a3%85%e5%b8%b8%e7%94%a8%e7%9a%84-plugins)
   - [最后性能优化篇](#%e6%9c%80%e5%90%8e%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e7%af%87)
-    - [babel 插件 @babel/plugin-transform-runtime](#babel-%e6%8f%92%e4%bb%b6-babelplugin-transform-runtime)
-      - [1. 安装开发环境依赖](#1-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [2. 安装生产环境依赖](#2-%e5%ae%89%e8%a3%85%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [3. 用法](#3-%e7%94%a8%e6%b3%95)
+    - [1. babel 插件 @babel/plugin-transform-runtime](#1-babel-%e6%8f%92%e4%bb%b6-babelplugin-transform-runtime)
+      - [1.1 安装开发环境依赖](#11-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [1.2 安装生产环境依赖](#12-%e5%ae%89%e8%a3%85%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [1.3 用法](#13-%e7%94%a8%e6%b3%95)
+    - [2. HTML 模板插件 html-webpack-plugin](#2-html-%e6%a8%a1%e6%9d%bf%e6%8f%92%e4%bb%b6-html-webpack-plugin)
+      - [2.1 安装开发环境依赖](#21-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [2.2 用法](#22-%e7%94%a8%e6%b3%95)
+    - [3. HTML 模板插件 html-webpack-plugin](#3-html-%e6%a8%a1%e6%9d%bf%e6%8f%92%e4%bb%b6-html-webpack-plugin)
+      - [3.1 安装开发环境依赖](#31-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [3.2 用法](#32-%e7%94%a8%e6%b3%95)
+    - [4. 热更新 插件 webpack-dev-server](#4-%e7%83%ad%e6%9b%b4%e6%96%b0-%e6%8f%92%e4%bb%b6-webpack-dev-server)
+      - [4.1 安装开发环境依赖](#41-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [4.2 配置 package.json](#42-%e9%85%8d%e7%bd%ae-packagejson)
+      - [4.3 配置 webpack.config.js](#43-%e9%85%8d%e7%bd%ae-webpackconfigjs)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -259,26 +272,56 @@ npm i less less-loader -D
 }
 ```
 
+### 3.6 安装 file-loader
+
+#### 3.6.1 安装 file-loader 所需依赖
+
+```bash
+npm i file-loader -D
+```
+
+#### 3.6.2 file-loader 规则配置
+
+```js
+// webpack.config.js
+{
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpe?g|gif|woff|woff2|eot|ttf|otf)$/i,
+        loader: "file-loader",
+        options: {
+          esModule: false, // 解决引入图片为Object[Module]的问题
+          name: "[name].[ext]", // 设置原来的文件名、后缀，默认是hash+后缀
+          outputPath: "images/", // 打包后存放的目录名
+          publicPath: "./images" // 引入的前缀目录名，和outputPath一致
+        }
+      }
+    ];
+  }
+}
+```
+
 ## 4. 安装常用的 Plugins
 
 ![plugins](https://jeno.oss-cn-shanghai.aliyuncs.com/web/webpack/plugins.png)
 
 ## 最后性能优化篇
 
-### babel 插件 `@babel/plugin-transform-runtime`
+### 1. babel 插件 `@babel/plugin-transform-runtime`
 
 [参考官网](https://babeljs.io/docs/en/babel-plugin-transform-runtime#corejs)
 
 > 你也可以使用`@babel/polyfill`,但是会出现一些副作用，比如：添加了一些全局对象、修改了一些原型链、还会覆盖你自定义的`Array.from`方法  
 > 该插件作用是将 `es6` 语法转译的方法，单独抽出来，作为模块导入，避免了出现覆盖的情况，因此这个插件完全替代了`@babel/polyfill`，
 
-#### 1. 安装开发环境依赖
+#### 1.1 安装开发环境依赖
 
 ```bash
 npm i @babel/plugin-transform-runtime -D
 ```
 
-#### 2. 安装生产环境依赖
+#### 1.2 安装生产环境依赖
 
 从`corejs3`开始才有`Array.includes`的`polyfill`，所以最好安装`corejs3`
 
@@ -286,7 +329,7 @@ npm i @babel/plugin-transform-runtime -D
 npm i @babel/runtime @babel/runtime-corejs3 -S
 ```
 
-#### 3. 用法
+#### 1.3 用法
 
 在`.babelrc`配置文件中，添加 `@babel/plugin-transform-runtime`，并指定`corejs` 为 3。
 
@@ -301,4 +344,82 @@ npm i @babel/runtime @babel/runtime-corejs3 -S
     ]
   ]
 }
+```
+
+### 2. HTML 模板插件 `html-webpack-plugin`
+
+#### 2.1 安装开发环境依赖
+
+```bash
+npm i html-webpack-plugin -D
+```
+
+#### 2.2 用法
+
+```js
+// webpack.config.js
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+{
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./public/index.html"
+    })
+  ];
+}
+```
+
+### 3. HTML 模板插件 `html-webpack-plugin`
+
+#### 3.1 安装开发环境依赖
+
+```bash
+npm i clean-webpack-plugin -D
+```
+
+#### 3.2 用法
+
+```js
+// webpack.config.js
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+{
+  plugins: [new CleanWebpackPlugin()];
+}
+```
+
+### 4. 热更新 插件 `webpack-dev-server`
+
+> [参考链接 1](https://webpack.js.org/configuration/dev-server/)  
+> [参考链接 2](https://webpack.js.org/guides/hot-module-replacement/)
+
+#### 4.1 安装开发环境依赖
+
+```bash
+npm i webpack-dev-server -D
+```
+
+#### 4.2 配置 package.json
+
+```json
+{
+  "scripts": {
+    "dev": "webpack-dev-server --open"
+  }
+}
+```
+
+#### 4.3 配置 webpack.config.js
+
+```js
+{
+  plugins: [
+    // 热更新
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  devServer: {
+    contentBase: path.join(__dirname, "dist"),
+    hot: true,
+    port: 8080,
+    compress: true //启用gzip压缩：
+  }
+};
 ```
