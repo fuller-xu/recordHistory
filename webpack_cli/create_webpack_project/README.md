@@ -38,7 +38,7 @@
     - [2. HTML 模板插件 html-webpack-plugin](#2-html-%e6%a8%a1%e6%9d%bf%e6%8f%92%e4%bb%b6-html-webpack-plugin)
       - [2.1 安装开发环境依赖](#21-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
       - [2.2 用法](#22-%e7%94%a8%e6%b3%95)
-    - [3. HTML 模板插件 html-webpack-plugin](#3-html-%e6%a8%a1%e6%9d%bf%e6%8f%92%e4%bb%b6-html-webpack-plugin)
+    - [3. 清理插件 clean-webpack-plugin](#3-%e6%b8%85%e7%90%86%e6%8f%92%e4%bb%b6-clean-webpack-plugin)
       - [3.1 安装开发环境依赖](#31-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
       - [3.2 用法](#32-%e7%94%a8%e6%b3%95)
     - [4. 热更新 插件 webpack-dev-server](#4-%e7%83%ad%e6%9b%b4%e6%96%b0-%e6%8f%92%e4%bb%b6-webpack-dev-server)
@@ -368,7 +368,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 }
 ```
 
-### 3. HTML 模板插件 `html-webpack-plugin`
+### 3. 清理插件 `clean-webpack-plugin`
 
 #### 3.1 安装开发环境依赖
 
