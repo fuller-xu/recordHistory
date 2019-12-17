@@ -3,7 +3,7 @@
 
 **Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
 
-- [创建 webpack web 项目](#%e5%88%9b%e5%bb%ba-webpack-web-%e9%a1%b9%e7%9b%ae)
+- [从零架构webpack + vue 项目](#%e4%bb%8e%e9%9b%b6%e6%9e%b6%e6%9e%84webpack--vue-%e9%a1%b9%e7%9b%ae)
   - [1. 安装 webpack](#1-%e5%ae%89%e8%a3%85-webpack)
   - [2. mode 详解](#2-mode-%e8%af%a6%e8%a7%a3)
   - [3. 安装常用的 Loaders](#3-%e5%ae%89%e8%a3%85%e5%b8%b8%e7%94%a8%e7%9a%84-loaders)
@@ -48,7 +48,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# 创建 webpack web 项目
+# 从零架构`webpack` + `vue` 项目
 
 [toc]
 
