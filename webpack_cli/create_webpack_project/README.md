@@ -30,7 +30,6 @@
       - [3.6.1 安装 file-loader 所需依赖](#361-%e5%ae%89%e8%a3%85-file-loader-%e6%89%80%e9%9c%80%e4%be%9d%e8%b5%96)
       - [3.6.2 file-loader 规则配置](#362-file-loader-%e8%a7%84%e5%88%99%e9%85%8d%e7%bd%ae)
   - [4. 安装常用的 Plugins](#4-%e5%ae%89%e8%a3%85%e5%b8%b8%e7%94%a8%e7%9a%84-plugins)
-  - [最后性能优化篇](#%e6%9c%80%e5%90%8e%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e7%af%87)
     - [1. babel 插件 @babel/plugin-transform-runtime](#1-babel-%e6%8f%92%e4%bb%b6-babelplugin-transform-runtime)
       - [1.1 安装开发环境依赖](#11-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
       - [1.2 安装生产环境依赖](#12-%e5%ae%89%e8%a3%85%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
@@ -45,6 +44,12 @@
       - [4.1 安装开发环境依赖](#41-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
       - [4.2 配置 package.json](#42-%e9%85%8d%e7%bd%ae-packagejson)
       - [4.3 配置 webpack.config.js](#43-%e9%85%8d%e7%bd%ae-webpackconfigjs)
+      - [4.4 使用](#44-%e4%bd%bf%e7%94%a8)
+    - [5. CSS提取插件 mini-css-extract-plugin](#5-css%e6%8f%90%e5%8f%96%e6%8f%92%e4%bb%b6-mini-css-extract-plugin)
+      - [5.1 安装开发环境依赖](#51-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [5.2 用法](#52-%e7%94%a8%e6%b3%95)
+  - [最后性能优化篇](#%e6%9c%80%e5%90%8e%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e7%af%87)
+    - [1 文件指纹策略](#1-%e6%96%87%e4%bb%b6%e6%8c%87%e7%ba%b9%e7%ad%96%e7%95%a5)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -304,10 +309,6 @@ npm i file-loader -D
 
 ## 4. 安装常用的 Plugins
 
-![plugins](https://jeno.oss-cn-shanghai.aliyuncs.com/web/webpack/plugins.png)
-
-## 最后性能优化篇
-
 ### 1. babel 插件 `@babel/plugin-transform-runtime`
 
 [参考官网](https://babeljs.io/docs/en/babel-plugin-transform-runtime#corejs)
@@ -361,8 +362,17 @@ npm i html-webpack-plugin -D
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 {
   plugins: [
+    // html 模板,及压缩html
     new HtmlWebpackPlugin({
-      template: "./public/index.html"
+      template: "./public/index.html",
+      minify: {
+        html5: true,
+        minifyCSS: true,
+        minifyJS: true,
+        removeComments: false,
+        collapseWhitespace: true,
+        preserveLineBreaks: false
+      }
     })
   ];
 }
@@ -389,7 +399,8 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 ### 4. 热更新 插件 `webpack-dev-server`
 
 > [参考链接 1](https://webpack.js.org/configuration/dev-server/)  
-> [参考链接 2](https://webpack.js.org/guides/hot-module-replacement/)
+> [参考链接 2](https://webpack.js.org/guides/hot-module-replacement/)  
+> 提示：另一种实现热更新的方式，可以使用`webpack-dev-middleware` 结合 `node` 服务器(`express`或者`koa`)来实现，这里就跳过了。
 
 #### 4.1 安装开发环境依赖
 
@@ -412,7 +423,7 @@ npm i webpack-dev-server -D
 ```js
 {
   plugins: [
-    // 热更新
+    // 开启热更新 (可省略不要)
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
@@ -423,3 +434,70 @@ npm i webpack-dev-server -D
   }
 };
 ```
+
+#### 4.4 使用
+
+```bash
+npm run dev
+```
+
+### 5. `CSS`提取插件 `mini-css-extract-plugin`
+
+#### 5.1 安装开发环境依赖
+
+```bash
+npm i mini-css-extract-plugin -D
+```
+
+#### 5.2 用法
+
+> 该插件是将 css 样式提取出独立的 css 文件，而`style-loader`是将 css 样式直接插入到`head`中，所以需要替换`style-loader`  
+> [参考链接](https://webpack.js.org/plugins/mini-css-extract-plugin/)
+
+```js
+// webpack.config.js
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+{
+ module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+              options: {
+                // 在开发模式中开启MiniCssExtractPlugin.loader
+                hmr: process.env.NODE_ENV === "development",
+                // if hmr does not work, this is a forceful method.
+                reloadAll: true
+              }
+            },
+            "css-loader"
+        ]
+      }
+    ]
+  },
+  plugins: [
+    // 提取css
+    // 文件名前加文件前缀，就可以指定放在文件夹内
+    new MiniCssExtractPlugin({
+      filename: "css/[name]_[contenthash:8].css"
+    })
+  ]
+}
+```
+
+## 最后性能优化篇
+
+### 1 文件指纹策略
+
+> webpack 中有三种文件指纹：`hash`，`chunkhash`，`contenthash`，它们都是`md5`生成的。
+
+1. `hash`——文件内容哈希，只要文件内容修改，哈希值就会改变。
+2. `chunkhash`——如果 `webpack` 配置有多个入口，如果一个入口内的文件内容被修改，那么所有的输出文件的哈希都会被修改，这时候就会用到`chunkhash`。
+3. `contenthash`——`webpack` 在打包的时候，会在 `js` 中导入 `css` 文件，如果改了 `js` 内容，抽出来的 `css` 文件的哈希也会改变，这时候就会会用到`contenthash`
+
+> 总结：(大部分情况下)  
+> `file-loader`输出的文件名使用`hash`  
+> `webpack`输出 `js` 文件名使用`chunkhash`  
+> `css`文件名使用`contenthash`

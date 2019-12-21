@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <div class="red">{{ message }}</div>
-    <img src="./images/taotao.jpg" alt="" />
+    <img src="./assets/images/taotao.jpg" alt="" />
   </div>
 </template>
 
 <script>
-import { getContent } from "@/content";
+import { getContent } from "@/utils/content";
 export default {
   data() {
     return {
@@ -24,14 +24,15 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 @font-face {
   font-family: MuYaoFont;
-  src: url(./fonts/MuYaoFont.ttf) format("truetype"); /* Safari, Android, iOS */
+  src: url(./assets/fonts/MuYaoFont.ttf) format("truetype"); /* Safari, Android, iOS */
 }
 .red {
   font-family: MuYaoFont;
   color: #f00;
   font-size: 40px;
+  background: #eee;
 }
 </style>
