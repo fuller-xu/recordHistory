@@ -15,6 +15,15 @@ const MiniCssOptions = {
     reloadAll: true
   }
 };
+const vueStyleOrMiniCssLoader = devMode ? "vue-style-loader" : MiniCssOptions;
+const px2remLoader = {
+  loader: "px2rem-loader",
+  options: {
+    remUnit: 75, // 1rem = 75px
+    remPrecision: 8 // 转换成rem，保留8位小数
+  }
+};
+console.log("当前环境----->", process.env.NODE_ENV);
 module.exports = {
   entry: {
     home: "./src/main.js"
@@ -41,15 +50,32 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [MiniCssOptions, "css-loader"]
+        use: [
+          vueStyleOrMiniCssLoader,
+          "css-loader",
+          "postcss-loader",
+          px2remLoader
+        ]
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [MiniCssOptions, "css-loader", "sass-loader"]
+        use: [
+          vueStyleOrMiniCssLoader,
+          "css-loader",
+          "postcss-loader",
+          "sass-loader",
+          px2remLoader
+        ]
       },
       {
         test: /\.less$/,
-        use: [MiniCssOptions, "css-loader", "less-loader"]
+        use: [
+          vueStyleOrMiniCssLoader,
+          "css-loader",
+          "postcss-loader",
+          "less-loader",
+          px2remLoader
+        ]
       },
       {
         test: /\.(png|jpe?g|gif)$/i,

@@ -30,26 +30,40 @@
       - [3.6.1 安装 file-loader 所需依赖](#361-%e5%ae%89%e8%a3%85-file-loader-%e6%89%80%e9%9c%80%e4%be%9d%e8%b5%96)
       - [3.6.2 file-loader 规则配置](#362-file-loader-%e8%a7%84%e5%88%99%e9%85%8d%e7%bd%ae)
   - [4. 安装常用的 Plugins](#4-%e5%ae%89%e8%a3%85%e5%b8%b8%e7%94%a8%e7%9a%84-plugins)
-    - [1. babel 插件 @babel/plugin-transform-runtime](#1-babel-%e6%8f%92%e4%bb%b6-babelplugin-transform-runtime)
-      - [1.1 安装开发环境依赖](#11-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [1.2 安装生产环境依赖](#12-%e5%ae%89%e8%a3%85%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [1.3 用法](#13-%e7%94%a8%e6%b3%95)
-    - [2. HTML 模板插件 html-webpack-plugin](#2-html-%e6%a8%a1%e6%9d%bf%e6%8f%92%e4%bb%b6-html-webpack-plugin)
-      - [2.1 安装开发环境依赖](#21-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [2.2 用法](#22-%e7%94%a8%e6%b3%95)
-    - [3. 清理插件 clean-webpack-plugin](#3-%e6%b8%85%e7%90%86%e6%8f%92%e4%bb%b6-clean-webpack-plugin)
-      - [3.1 安装开发环境依赖](#31-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [3.2 用法](#32-%e7%94%a8%e6%b3%95)
-    - [4. 热更新 插件 webpack-dev-server](#4-%e7%83%ad%e6%9b%b4%e6%96%b0-%e6%8f%92%e4%bb%b6-webpack-dev-server)
-      - [4.1 安装开发环境依赖](#41-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [4.2 配置 package.json](#42-%e9%85%8d%e7%bd%ae-packagejson)
-      - [4.3 配置 webpack.config.js](#43-%e9%85%8d%e7%bd%ae-webpackconfigjs)
-      - [4.4 使用](#44-%e4%bd%bf%e7%94%a8)
-    - [5. CSS提取插件 mini-css-extract-plugin](#5-css%e6%8f%90%e5%8f%96%e6%8f%92%e4%bb%b6-mini-css-extract-plugin)
-      - [5.1 安装开发环境依赖](#51-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [5.2 用法](#52-%e7%94%a8%e6%b3%95)
-  - [最后性能优化篇](#%e6%9c%80%e5%90%8e%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e7%af%87)
-    - [1 文件指纹策略](#1-%e6%96%87%e4%bb%b6%e6%8c%87%e7%ba%b9%e7%ad%96%e7%95%a5)
+    - [4.1 babel 插件 @babel/plugin-transform-runtime](#41-babel-%e6%8f%92%e4%bb%b6-babelplugin-transform-runtime)
+      - [4.1.1 安装开发环境依赖](#411-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [4.1.2 安装生产环境依赖](#412-%e5%ae%89%e8%a3%85%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [4.1.3 用法](#413-%e7%94%a8%e6%b3%95)
+    - [4.2 HTML 模板插件 html-webpack-plugin](#42-html-%e6%a8%a1%e6%9d%bf%e6%8f%92%e4%bb%b6-html-webpack-plugin)
+      - [4.2.1 安装开发环境依赖](#421-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [4.2.2 用法](#422-%e7%94%a8%e6%b3%95)
+    - [4.3 清理插件 clean-webpack-plugin](#43-%e6%b8%85%e7%90%86%e6%8f%92%e4%bb%b6-clean-webpack-plugin)
+      - [4.3.1 安装开发环境依赖](#431-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [4.3.2 用法](#432-%e7%94%a8%e6%b3%95)
+    - [4.4 热更新 插件 webpack-dev-server](#44-%e7%83%ad%e6%9b%b4%e6%96%b0-%e6%8f%92%e4%bb%b6-webpack-dev-server)
+      - [4.4.1 安装开发环境依赖](#441-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [4.4.2 配置 package.json](#442-%e9%85%8d%e7%bd%ae-packagejson)
+      - [4.4.3 配置 webpack.config.js](#443-%e9%85%8d%e7%bd%ae-webpackconfigjs)
+      - [4.4.4 使用](#444-%e4%bd%bf%e7%94%a8)
+    - [4.5 CSS提取插件 mini-css-extract-plugin](#45-css%e6%8f%90%e5%8f%96%e6%8f%92%e4%bb%b6-mini-css-extract-plugin)
+      - [4.5.1 安装开发环境依赖](#451-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [4.5.2 用法](#452-%e7%94%a8%e6%b3%95)
+    - [4.6 PostCSS插件 autoprefixer 自动补齐css前缀](#46-postcss%e6%8f%92%e4%bb%b6-autoprefixer-%e8%87%aa%e5%8a%a8%e8%a1%a5%e9%bd%90css%e5%89%8d%e7%bc%80)
+      - [4.6.1 安装开发环境依赖](#461-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [4.6.2 使用](#462-%e4%bd%bf%e7%94%a8)
+    - [4.7 安装cross-env指定当前环境](#47-%e5%ae%89%e8%a3%85cross-env%e6%8c%87%e5%ae%9a%e5%bd%93%e5%89%8d%e7%8e%af%e5%a2%83)
+      - [4.7.1 安装开发环境依赖](#471-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [4.7.2 使用](#472-%e4%bd%bf%e7%94%a8)
+    - [4.8 压缩 css](#48-%e5%8e%8b%e7%bc%a9-css)
+      - [4.8.1 安装开发环境依赖](#481-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [4.8.2 用法](#482-%e7%94%a8%e6%b3%95)
+    - [4.9 移动端 px2rem-loader插件](#49-%e7%a7%bb%e5%8a%a8%e7%ab%af-px2rem-loader%e6%8f%92%e4%bb%b6)
+      - [4.9.1 安装开发环境依赖](#491-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [4.9.2 安装生产环境依赖](#492-%e5%ae%89%e8%a3%85%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
+      - [4.9.3 使用](#493-%e4%bd%bf%e7%94%a8)
+  - [5.最后性能优化篇](#5%e6%9c%80%e5%90%8e%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e7%af%87)
+    - [5.1 文件指纹策略](#51-%e6%96%87%e4%bb%b6%e6%8c%87%e7%ba%b9%e7%ad%96%e7%95%a5)
+    - [5.2 静态资源内联](#52-%e9%9d%99%e6%80%81%e8%b5%84%e6%ba%90%e5%86%85%e8%81%94)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -309,20 +323,20 @@ npm i file-loader -D
 
 ## 4. 安装常用的 Plugins
 
-### 1. babel 插件 `@babel/plugin-transform-runtime`
+### 4.1 babel 插件 `@babel/plugin-transform-runtime`
 
 [参考官网](https://babeljs.io/docs/en/babel-plugin-transform-runtime#corejs)
 
 > 你也可以使用`@babel/polyfill`,但是会出现一些副作用，比如：添加了一些全局对象、修改了一些原型链、还会覆盖你自定义的`Array.from`方法  
 > 该插件作用是将 `es6` 语法转译的方法，单独抽出来，作为模块导入，避免了出现覆盖的情况，因此这个插件完全替代了`@babel/polyfill`，
 
-#### 1.1 安装开发环境依赖
+#### 4.1.1 安装开发环境依赖
 
 ```bash
 npm i @babel/plugin-transform-runtime -D
 ```
 
-#### 1.2 安装生产环境依赖
+#### 4.1.2 安装生产环境依赖
 
 从`corejs3`开始才有`Array.includes`的`polyfill`，所以最好安装`corejs3`
 
@@ -330,7 +344,7 @@ npm i @babel/plugin-transform-runtime -D
 npm i @babel/runtime @babel/runtime-corejs3 -S
 ```
 
-#### 1.3 用法
+#### 4.1.3 用法
 
 在`.babelrc`配置文件中，添加 `@babel/plugin-transform-runtime`，并指定`corejs` 为 3。
 
@@ -347,15 +361,15 @@ npm i @babel/runtime @babel/runtime-corejs3 -S
 }
 ```
 
-### 2. HTML 模板插件 `html-webpack-plugin`
+### 4.2 HTML 模板插件 `html-webpack-plugin`
 
-#### 2.1 安装开发环境依赖
+#### 4.2.1 安装开发环境依赖
 
 ```bash
 npm i html-webpack-plugin -D
 ```
 
-#### 2.2 用法
+#### 4.2.2 用法
 
 ```js
 // webpack.config.js
@@ -378,15 +392,15 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 }
 ```
 
-### 3. 清理插件 `clean-webpack-plugin`
+### 4.3 清理插件 `clean-webpack-plugin`
 
-#### 3.1 安装开发环境依赖
+#### 4.3.1 安装开发环境依赖
 
 ```bash
 npm i clean-webpack-plugin -D
 ```
 
-#### 3.2 用法
+#### 4.3.2 用法
 
 ```js
 // webpack.config.js
@@ -396,19 +410,19 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 }
 ```
 
-### 4. 热更新 插件 `webpack-dev-server`
+### 4.4 热更新 插件 `webpack-dev-server`
 
 > [参考链接 1](https://webpack.js.org/configuration/dev-server/)  
 > [参考链接 2](https://webpack.js.org/guides/hot-module-replacement/)  
 > 提示：另一种实现热更新的方式，可以使用`webpack-dev-middleware` 结合 `node` 服务器(`express`或者`koa`)来实现，这里就跳过了。
 
-#### 4.1 安装开发环境依赖
+#### 4.4.1 安装开发环境依赖
 
 ```bash
 npm i webpack-dev-server -D
 ```
 
-#### 4.2 配置 package.json
+#### 4.4.2 配置 package.json
 
 ```json
 {
@@ -418,7 +432,7 @@ npm i webpack-dev-server -D
 }
 ```
 
-#### 4.3 配置 webpack.config.js
+#### 4.4.3 配置 webpack.config.js
 
 ```js
 {
@@ -435,21 +449,21 @@ npm i webpack-dev-server -D
 };
 ```
 
-#### 4.4 使用
+#### 4.4.4 使用
 
 ```bash
 npm run dev
 ```
 
-### 5. `CSS`提取插件 `mini-css-extract-plugin`
+### 4.5 `CSS`提取插件 `mini-css-extract-plugin`
 
-#### 5.1 安装开发环境依赖
+#### 4.5.1 安装开发环境依赖
 
 ```bash
 npm i mini-css-extract-plugin -D
 ```
 
-#### 5.2 用法
+#### 4.5.2 用法
 
 > 该插件是将 css 样式提取出独立的 css 文件，而`style-loader`是将 css 样式直接插入到`head`中，所以需要替换`style-loader`  
 > [参考链接](https://webpack.js.org/plugins/mini-css-extract-plugin/)
@@ -487,17 +501,204 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 }
 ```
 
-## 最后性能优化篇
+### 4.6 `PostCSS`插件 `autoprefixer` 自动补齐`css`前缀
 
-### 1 文件指纹策略
+#### 4.6.1 安装开发环境依赖
+
+```bash
+npm i postcss-loader autoprefixer -D
+```
+
+#### 4.6.2 使用
+
+配置 webpack.config.js
+
+```js
+{
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ["vue-style-loader", "css-loader", "postcss-loader"]
+      }
+    ];
+  }
+}
+```
+
+根目录下添加 `postcss.config.js` 文件，给`postcss`添加插件`autoprefixer`
+
+```js
+module.exports = {
+  plugins: {
+    autoprefixer: {}
+  }
+};
+```
+
+根目录下添加 `.browserslistrc` 文件 或者在 `package.json` 文件中添加 `key` 为 `browserslist`，内容为 `String` 数组。用来配置浏览器兼容版本，兼容性是依据网站[caniuse](https://caniuse.com/)，兼容配置参数[参考链接](https://github.com/browserslist/browserslist#queries)
+
+```bash
+# .browserslistrc
+> 1%
+last 2 versions
+not ie <= 8
+```
+
+### 4.7 安装`cross-env`指定当前环境
+
+> 安装了`cross-env`，就可以在 webpack 编译期间指定开发环境或者是生成环境的处理  
+> e.g. if(process.env.NODE_ENV === "development") { // TODO }
+
+#### 4.7.1 安装开发环境依赖
+
+```bash
+npm i cross-env -D
+```
+
+#### 4.7.2 使用
+
+package.json
+
+```json
+{
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --config webpack.prod.js",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.dev.js --open"
+  }
+}
+```
+
+### 4.8 压缩 css
+
+#### 4.8.1 安装开发环境依赖
+
+```bash
+npm i -D optimize-css-assets-webpack-plugin
+```
+
+#### 4.8.2 用法
+
+webpack.config.js
+
+```js
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+
+{
+  optimization: {
+    minimizer: [new OptimizeCssAssetsPlugin({})]
+  },
+}
+```
+
+### 4.9 移动端 `px2rem-loader`插件
+
+#### 4.9.1 安装开发环境依赖
+
+```bash
+npm i -D px2rem-loader
+```
+
+#### 4.9.2 安装生产环境依赖
+
+根据设备宽高计算根元素的 fontSize 的大小，这里是手淘的一套成熟的方案。
+
+```bash
+npm i -S lib-flexible
+```
+
+#### 4.9.3 使用
+
+webpack.config.js
+
+```js
+{
+  module: {
+    rules: [
+      {
+        test: /\.less$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          "postcss-loader",
+          "less-loader",
+          {
+            loader: "px2rem-loader",
+            options: {
+              remUnit: 75, // 1rem = 75px
+              remPrecision: 8 // 转换成rem，保留8位小数
+            }
+          }
+        ]
+      }
+    ];
+  }
+}
+```
+
+在模板文件 `index.html` 中手动复制 `flexible.js` 的内容到 `script` 标签中，后面性能优化中会有更优雅的方式导入。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script>
+      /* 这里是 flexible.js 的文本内容 */
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
+```
+
+## 5.最后性能优化篇
+
+### 5.1 文件指纹策略
 
 > webpack 中有三种文件指纹：`hash`，`chunkhash`，`contenthash`，它们都是`md5`生成的。
 
 1. `hash`——文件内容哈希，只要文件内容修改，哈希值就会改变。
 2. `chunkhash`——如果 `webpack` 配置有多个入口，如果一个入口内的文件内容被修改，那么所有的输出文件的哈希都会被修改，这时候就会用到`chunkhash`。
-3. `contenthash`——`webpack` 在打包的时候，会在 `js` 中导入 `css` 文件，如果改了 `js` 内容，抽出来的 `css` 文件的哈希也会改变，这时候就会会用到`contenthash`
+3. `contenthash`——`webpack` 在打包的时候，会在 `js` 中导入 `css` 文件，如果改了 `js` 内容，抽出来的 `css` 文件的哈希也会改变，这时候就会用到`contenthash`
 
 > 总结：(大部分情况下)  
 > `file-loader`输出的文件名使用`hash`  
 > `webpack`输出 `js` 文件名使用`chunkhash`  
 > `css`文件名使用`contenthash`
+
+### 5.2 静态资源内联
+
+> 使用案例，页面基础样式、初始化脚本、抽取多页面中公共的 `meta` 信息，优点如下：  
+> 减少 `HTTP` 网络请求  
+> `css` 内联避免页面闪动
+
+安装 `raw-loader`，指定版本 0.5.1，因为 0.5.1 之后的版本导出方式不一样(`export default`)
+
+```bash
+npm i -D raw-loader@0.5.1
+```
+
+在模板文件中使用：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script>
+      ${ require('raw-loader!babel-loader!../node_modules/data-pick/index.js')}
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
+```

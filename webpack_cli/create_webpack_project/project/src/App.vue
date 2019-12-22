@@ -7,10 +7,11 @@
 
 <script>
 import { getContent } from "@/utils/content";
+console.log([1, 2].includes(2));
 export default {
   data() {
     return {
-      message: "你好!大...大前端~哈"
+      message: "你好!大...大前端~哈1"
     };
   },
   created() {
@@ -24,7 +25,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 @font-face {
   font-family: MuYaoFont;
   src: url(./assets/fonts/MuYaoFont.ttf) format("truetype"); /* Safari, Android, iOS */
@@ -32,7 +33,8 @@ export default {
 .red {
   font-family: MuYaoFont;
   color: #f00;
-  font-size: 40px;
+  font-size: 50px;
   background: #eee;
+  display: flex;
 }
 </style>
