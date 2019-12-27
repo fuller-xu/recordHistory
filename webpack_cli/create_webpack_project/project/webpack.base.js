@@ -3,8 +3,49 @@ const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const glob = require("glob");
 const devMode = process.env.NODE_ENV === "development";
 
+const setMpa = () => {
+  const entry = {}; //入口对象
+  const htmlWebpackPlugins = []; //html-webpack-plugin配置
+  //获取入口文件
+  const entryFiles = glob.sync(path.join(__dirname, "./src/pages/*/index.js"));
+
+  Object.keys(entryFiles).map(index => {
+    const entryFil = entryFiles[index];
+    //获取文件夹名称
+    const match = entryFil.match(/src\/pages\/(.*)\/index\.js/);
+    const pathname = match && match[1];
+    console.log(pathname);
+    //配置入口文件对象
+    entry[pathname] = entryFil;
+    //配置html-webpack-plugin
+    htmlWebpackPlugins.push(
+      new HtmlWebpackPlugin({
+        template: path.join(__dirname, `src/pages/${pathname}/index.html`),
+        filename: `pages/${pathname}.html`,
+        chunks: ["vendors", "commons", pathname],
+        inject: true,
+        minify: {
+          html5: true,
+          collapseWhitespace: true,
+          preserveLineBreaks: false,
+          minifyJS: true,
+          minifyCSS: true,
+          removeComments: false
+        }
+      })
+    );
+  });
+
+  return {
+    entry,
+    htmlWebpackPlugins
+  };
+};
+
+const { entry, htmlWebpackPlugins } = setMpa();
 // MiniCssExtractPlugin.loader options
 const MiniCssOptions = {
   loader: MiniCssExtractPlugin.loader,
@@ -25,8 +66,10 @@ const px2remLoader = {
 };
 console.log("当前环境----->", process.env.NODE_ENV);
 module.exports = {
+  //   stats: "errors-only",
+  //   entry: entry,
   entry: {
-    home: "./src/main.js"
+    index: "./src/pages/index/index.js"
   },
   output: {
     path: path.join(__dirname, "dist"),
@@ -103,15 +146,19 @@ module.exports = {
     new VueLoaderPlugin(),
 
     // html 模板,及压缩html
+    // ...htmlWebpackPlugins,
     new HtmlWebpackPlugin({
-      template: "./public/index.html",
+      template: path.join(__dirname, `src/pages/index/index.html`),
+      filename: `pages/index.html`,
+      chunks: ["vendors", "commons", "index"],
+      inject: true,
       minify: {
         html5: true,
-        minifyCSS: true,
-        minifyJS: true,
-        removeComments: false,
         collapseWhitespace: true,
-        preserveLineBreaks: false
+        preserveLineBreaks: false,
+        minifyJS: true,
+        minifyCSS: true,
+        removeComments: false
       }
     }),
     // 提取css,
@@ -119,7 +166,5 @@ module.exports = {
       filename: "css/[name]_[contenthash:8].css",
       chunkFilename: "css/[id]_[contenthash:8].css"
     })
-    // 热更新(可省略)
-    // new webpack.HotModuleReplacementPlugin()
   ]
 };

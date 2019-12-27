@@ -8,5 +8,6 @@ module.exports = Object.assign(webpackBaseConfig, {
     hot: true,
     port: 8089,
     compress: true //启用gzip压缩：
-  }
+  },
+  devtool: "source-map"
 });

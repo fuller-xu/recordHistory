@@ -64,6 +64,11 @@
   - [5.最后性能优化篇](#5%e6%9c%80%e5%90%8e%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e7%af%87)
     - [5.1 文件指纹策略](#51-%e6%96%87%e4%bb%b6%e6%8c%87%e7%ba%b9%e7%ad%96%e7%95%a5)
     - [5.2 静态资源内联](#52-%e9%9d%99%e6%80%81%e8%b5%84%e6%ba%90%e5%86%85%e8%81%94)
+    - [5.3 多页面打包通用方案](#53-%e5%a4%9a%e9%a1%b5%e9%9d%a2%e6%89%93%e5%8c%85%e9%80%9a%e7%94%a8%e6%96%b9%e6%a1%88)
+    - [5.4 开启 source-map](#54-%e5%bc%80%e5%90%af-source-map)
+    - [5.5 提取公共基础库和公共脚本](#55-%e6%8f%90%e5%8f%96%e5%85%ac%e5%85%b1%e5%9f%ba%e7%a1%80%e5%ba%93%e5%92%8c%e5%85%ac%e5%85%b1%e8%84%9a%e6%9c%ac)
+    - [5.6 tree shaking](#56-tree-shaking)
+    - [5.7 scope hoisting](#57-scope-hoisting)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -585,9 +590,7 @@ webpack.config.js
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 {
-  optimization: {
-    minimizer: [new OptimizeCssAssetsPlugin({})]
-  },
+  plugins: [new OptimizeCssAssetsPlugin()];
 }
 ```
 
@@ -702,3 +705,179 @@ npm i -D raw-loader@0.5.1
   </body>
 </html>
 ```
+
+### 5.3 多页面打包通用方案
+
+1. 首先将每个页面的资源放在各自的文件夹下面
+
+```txt
+project
+├─src
+|  ├─pages
+|  |   ├─mine
+|  |   |  ├─Mine.vue
+|  |   |  ├─index.html
+|  |   |  └index.js
+|  |   ├─index
+|  |   |   ├─Index.vue
+|  |   |   ├─index.html
+|  |   |   └index.js
+```
+
+2. 安装 `glob` 工具
+
+```bash
+npm i -D glob
+```
+
+3. `glob`的使用
+
+webpack.config.js
+
+```js
+const glob = require("glob");
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+
+const setMpa = () => {
+  const entry = {}; //入口对象
+  const htmlWebpackPlugins = []; //html-webpack-plugin配置
+  //获取入口文件
+  const entryFiles = glob.sync(path.join(__dirname, "./src/pages/*/index.js"));
+
+  Object.keys(entryFiles).map(index => {
+    const entryFil = entryFiles[index];
+    //获取文件夹名称
+    const match = entryFil.match(/src\/pages\/(.*)\/index\.js/);
+    const pathname = match && match[1];
+    //配置入口文件对象
+    entry[pathname] = entryFil;
+    //配置html-webpack-plugin
+    htmlWebpackPlugins.push(
+      new HtmlWebpackPlugin({
+        template: path.join(__dirname, `src/pages/${pathname}/index.html`),
+        filename: `pages/${pathname}.html`,
+        chunks: [pathname],
+        inject: true,
+        minify: {
+          html5: true,
+          collapseWhitespace: true,
+          preserveLineBreaks: false,
+          minifyJS: true,
+          minifyCSS: true,
+          removeComments: false
+        }
+      })
+    );
+  });
+};
+
+const { entry, htmlWebpackPlugins } = setMpa();
+module.exports = {
+  // other
+  entry,
+  plugins: [].concat(htmlWebpackPlugins)
+};
+```
+
+### 5.4 开启 source-map
+
+> 在开发环境中开启`source-map`，方便开发调试，快速定位。
+
+webpack.config.js
+
+```js
+{
+  devtool: "source-map";
+}
+```
+
+### 5.5 提取公共基础库和公共脚本
+
+1. 安装插件 `html-webpack-externals-plugin`
+
+> 抽离基础库，可以指定本地资源库 或者 是 `cdn`
+
+```bash
+npm i html-webpack-externals-plugin -D
+```
+
+2. 使用插件
+
+webpack.config.js
+
+```js
+const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
+
+{
+  plugins: [
+    new HtmlWebpackExternalsPlugin({
+      externals: [
+        {
+          module: "vue",
+          entry: "//cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js",
+          global: "Vue"
+        }
+      ]
+    })
+  ];
+}
+```
+
+3. 公共脚本分离
+
+webpack.config.js
+
+```js
+{
+  optimization: {
+    splitChunks: {
+      minSize: 0, // 最小脚本大小
+      cacheGroups: {
+        // 基础库分离
+        vendors: {
+          test: /(vue|vuex|vue-router)/,
+          name: "vendors",
+          chunks: "all"
+        },
+        // 公共脚本分离
+        commons: {
+          name: "commons",
+          chunks: "all", // 同步引入和异步引入的脚本都会被分离
+          minChunks: 2 // 引用两次以上
+        }
+      }
+    }
+  }
+}
+```
+
+4. 将抽离出来的公共脚本插入到 `html` 中
+
+```js
+{
+  plugins: [
+    // html 模板,及压缩html
+    new HtmlWebpackPlugin({
+      template: "./public/index.html",
+      chunks: ["vendors", "commons", "index"]
+    })
+  ];
+}
+```
+
+### 5.6 tree shaking
+
+> 如果一个模块中只用到了一个方法，就只要打包这一个方法。  
+> 如果遇到 `Dead code`，e.g. `if(false) console.log('这里不会被打包')`，那么也不需要打包。  
+> `webpack4` 开始，只要设置`mode = production` 默认开启。  
+> 注意：只有使用 `es6` 语法，`webpack` 才能作 `tree shaking` 的处理  
+> [参考文献](https://webpack.js.org/guides/tree-shaking/#root)
+
+### 5.7 scope hoisting
+
+> 避免 `webpack` 打包出现多层函数作用域的问题(多层闭包)，导致内存开销变大。  
+> `scope hoisting`是将所有模块的代码按照引⽤顺序放在⼀一个函数作用域里，减少闭包和内存开销。  
+> `webpack4` 开始，只要设置`mode = production` 默认开启。  
+> 注意：只适用 `es6` 语法  
+> [参考文献](https://webpack.js.org/plugins/module-concatenation-plugin/#root)
