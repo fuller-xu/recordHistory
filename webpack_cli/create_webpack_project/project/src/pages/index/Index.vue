@@ -1,26 +1,28 @@
 <template>
   <div id="app">
-    <div class="red">
-      <span>{{ message }}</span>
+    <div :class="flag ? 'active' : ''" class="red">
       <span>{{ message }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { dataPick } from "data-pick";
-import { getContent } from "@/utils/content";
+import { dataPick } from 'data-pick';
+import { getContent } from '@/utils/content';
 console.log([1, 2].includes(2));
 console.log([1, 2].includes(2));
+console.log(dataPick);
 export default {
   data() {
     return {
-      message: "首页"
+      message: '首页',
+      flag: false
     };
   },
   created() {
     this.init();
   },
+
   methods: {
     init() {
       //   this.message = getContent("l");

@@ -61,7 +61,7 @@
       - [4.9.1 安装开发环境依赖](#491-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
       - [4.9.2 安装生产环境依赖](#492-%e5%ae%89%e8%a3%85%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
       - [4.9.3 使用](#493-%e4%bd%bf%e7%94%a8)
-  - [5.最后性能优化篇](#5%e6%9c%80%e5%90%8e%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e7%af%87)
+  - [5.性能优化篇](#5%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e7%af%87)
     - [5.1 文件指纹策略](#51-%e6%96%87%e4%bb%b6%e6%8c%87%e7%ba%b9%e7%ad%96%e7%95%a5)
     - [5.2 静态资源内联](#52-%e9%9d%99%e6%80%81%e8%b5%84%e6%ba%90%e5%86%85%e8%81%94)
     - [5.3 多页面打包通用方案](#53-%e5%a4%9a%e9%a1%b5%e9%9d%a2%e6%89%93%e5%8c%85%e9%80%9a%e7%94%a8%e6%96%b9%e6%a1%88)
@@ -69,6 +69,10 @@
     - [5.5 提取公共基础库和公共脚本](#55-%e6%8f%90%e5%8f%96%e5%85%ac%e5%85%b1%e5%9f%ba%e7%a1%80%e5%ba%93%e5%92%8c%e5%85%ac%e5%85%b1%e8%84%9a%e6%9c%ac)
     - [5.6 tree shaking](#56-tree-shaking)
     - [5.7 scope hoisting](#57-scope-hoisting)
+    - [5.8 代码分割与动态 import](#58-%e4%bb%a3%e7%a0%81%e5%88%86%e5%89%b2%e4%b8%8e%e5%8a%a8%e6%80%81-import)
+  - [6. 扩展篇](#6-%e6%89%a9%e5%b1%95%e7%af%87)
+    - [6.1 项目配置 ESlit 和 Prettier](#61-%e9%a1%b9%e7%9b%ae%e9%85%8d%e7%bd%ae-eslit-%e5%92%8c-prettier)
+    - [6.2 在npm上发布基础库或者组件](#62-%e5%9c%a8npm%e4%b8%8a%e5%8f%91%e5%b8%83%e5%9f%ba%e7%a1%80%e5%ba%93%e6%88%96%e8%80%85%e7%bb%84%e4%bb%b6)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -659,7 +663,7 @@ webpack.config.js
 </html>
 ```
 
-## 5.最后性能优化篇
+## 5.性能优化篇
 
 ### 5.1 文件指纹策略
 
@@ -881,3 +885,200 @@ webpack.config.js
 > `webpack4` 开始，只要设置`mode = production` 默认开启。  
 > 注意：只适用 `es6` 语法  
 > [参考文献](https://webpack.js.org/plugins/module-concatenation-plugin/#root)
+
+### 5.8 代码分割与动态 `import`
+
+后续在添加路由的时候补充。
+
+## 6. 扩展篇
+
+### 6.1 项目配置 `ESlit` 和 `Prettier`
+
+> `ESLint` & `Prettier` 的工作描述
+
+- `ESLint` 负责代码规则校验，检查代码是否符合代码规范的工具。
+- `Prettier` 负责代码风格，代码样式的调整。
+
+只使用`eslint -fix` 调整风格，其中的缺点如下：
+
+1. 每种编辑器会有不一样的代码格式，而且配置会比较麻烦。
+2. `prettier` 已经逐渐成为业界主流的代码风格格式化工具。
+3. 减轻 `eslint` 等工具的校验规则，因为将代码样式校验交给了 `prettier`，所以可以将代码校验的规则更准确地应用到代码真正的规范上面。
+
+> 这里使用的是腾讯团队 `AlloyTeam` 出版的 `eslint-config-alloy`  
+> [参考链接](https://github.com/AlloyTeam/eslint-config-alloy)
+
+1. 安装 `ESlint` 相关依赖
+
+```bash
+npm i -D eslint babel-eslint vue-eslint-parser@5.0.0 eslint-plugin-vue eslint-config-alloy
+```
+
+2. 在根目录创建 `.eslintrc.js`，添加插件
+
+```js
+module.exports = {
+  plugins: ['vue', 'prettier'],
+  extends: extends: ['alloy', 'alloy/vue', 'plugin:vue/essential', 'plugin:prettier/recommended'],
+  env: {
+    // Your environments (which contains several predefined global variables)
+    //
+    // browser: true,
+    // node: true,
+    // mocha: true,
+    // jest: true,
+    // jquery: true
+  },
+  globals: {
+    // Your global variables (setting to false means it's not allowed to be reassigned)
+    //
+    // myGlobal: false
+  },
+  rules: {
+    // Customize your rules
+  }
+};
+```
+
+3. 安装 `prettier` 相关插件
+
+> eslint-config-alloy do not include all style-related rules in v3, so there is no need to install eslint-config-prettier. Just install prettier and related VSCode plugins.
+
+```bash
+npm i -D prettier prettier-eslint-cli eslint-plugin-prettier
+```
+
+4. 在根目录下创建 `.prettierrc.js`
+
+```js
+// 根据个人审美，自己配置
+module.exports = {
+  // max 100 characters per line
+  printWidth: 100,
+  // use 4 spaces for indentation
+  tabWidth: 4,
+  // use spaces instead of indentations
+  useTabs: false,
+  // semicolon at the end of the line
+  semi: true,
+  // use single quotes
+  singleQuote: true,
+  // object's key is quoted only when necessary
+  quoteProps: "as-needed",
+  // use double quotes instead of single quotes in jsx
+  jsxSingleQuote: false,
+  // no comma at the end
+  trailingComma: "none",
+  // spaces are required at the beginning and end of the braces
+  bracketSpacing: true,
+  // end tag of jsx need to wrap
+  jsxBracketSameLine: false,
+  // brackets are required for arrow function parameter, even when there is only one parameter
+  arrowParens: "always",
+  // format the entire contents of the file
+  rangeStart: 0,
+  rangeEnd: Infinity,
+  // no need to write the beginning @prettier of the file
+  requirePragma: false,
+  // No need to automatically insert @prettier at the beginning of the file
+  insertPragma: false,
+  // use default break criteria
+  proseWrap: "preserve",
+  // decide whether to break the html according to the display style
+  htmlWhitespaceSensitivity: "css",
+  // lf for newline
+  endOfLine: "lf"
+};
+```
+
+5. 其他可选依赖
+
+```bash
+npm i -D babel-plugin-import eslint-loader eslint-plugin-html eslint-plugin-import
+```
+
+### 6.2 在`npm`上发布基础库或者组件
+
+1. 初始化项目结构
+
+```bash
+npm init -y
+```
+
+2. 安装 `webpack` `webpack-cli`
+
+```bash
+npm i -D webpack webpack-cli
+```
+
+3. 安装压缩插件 `terser-webpack-plugin`
+
+```bash
+npm i -D terser-webpack-plugin
+```
+
+4. 编写基础库代码
+
+根目录创建 `src` 目录，接着创建 `index.js` 入口文件，导出基础库
+
+6. 配置 webpack
+
+根目录创建 webpack.config.js
+
+> 这里 `output` 的配置，兼容多规范的使用，比如 `RequireJS` , `CommonJs` , `ES module` , `HTML`中都可以引入使用
+
+```js
+const TerserPlugin = require("terser-webpack-plugin");
+module.exports = {
+  entry: {
+    "data-pick": "./src/index.js",
+    "data-pick.min": "./src/index.js"
+  },
+  output: {
+    filename: "[name].js",
+    library: "DataPick",
+    libraryTarget: "umd",
+    libraryExport: "default",
+    // 解决 node environment (commonjs) 的问题  见 issues https://github.com/webpack/webpack/issues/6784
+    globalObject: "typeof self !== 'undefined' ? self : this"
+  },
+  mode: "production",
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        include: /\.min\.js$/
+      })
+    ]
+  }
+};
+```
+
+1. 创建入口文件
+
+`npm` 包默认入口文件是根目录下的 `index.js`，因此在根目录创建 index.js, 导出打包后的基础库压缩文件
+
+```js
+// index.js
+module.exports = require("./dist/data-pick.min.js");
+```
+
+7. 增加执行脚本和入口文件
+
+package.json
+
+```json
+{
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "prepublish": "webpack"
+  }
+}
+```
+
+8. 发布
+
+```bash
+npm publish
+```
