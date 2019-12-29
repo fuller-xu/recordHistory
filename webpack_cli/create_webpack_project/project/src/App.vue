@@ -20,8 +20,9 @@ const data = {
   hight: 3,
   abc: 4
 };
-
+console.log(111);
 console.log(Object.keys(dataPick(data, jsonClass)));
+console.log(getContent('lele'));
 export default {
   data() {
     return {
@@ -39,10 +40,14 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style scoped>
 @font-face {
   font-family: MuYaoFont;
   src: url(./assets/fonts/MuYaoFont.ttf) format('truetype'); /* Safari, Android, iOS */
+}
+* {
+  margin: 0;
+  padding: 0;
 }
 .red {
   font-family: MuYaoFont;

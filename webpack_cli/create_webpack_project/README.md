@@ -8,59 +8,25 @@
   - [2. mode 详解](#2-mode-%e8%af%a6%e8%a7%a3)
   - [3. 安装常用的 Loaders](#3-%e5%ae%89%e8%a3%85%e5%b8%b8%e7%94%a8%e7%9a%84-loaders)
     - [3.1 安装 babel-loader —— 启用 js 新语法的编译](#31-%e5%ae%89%e8%a3%85-babel-loader--%e5%90%af%e7%94%a8-js-%e6%96%b0%e8%af%ad%e6%b3%95%e7%9a%84%e7%bc%96%e8%af%91)
-      - [3.1.1 安装 babel 所需依赖](#311-%e5%ae%89%e8%a3%85-babel-%e6%89%80%e9%9c%80%e4%be%9d%e8%b5%96)
-      - [3.1.2 webpack.config 添加规则](#312-webpackconfig-%e6%b7%bb%e5%8a%a0%e8%a7%84%e5%88%99)
-      - [3.1.3 创建 babel 配置文件](#313-%e5%88%9b%e5%bb%ba-babel-%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6)
     - [3.2 安装 css-loader](#32-%e5%ae%89%e8%a3%85-css-loader)
-      - [3.2.1 安装 css-loader 所需依赖](#321-%e5%ae%89%e8%a3%85-css-loader-%e6%89%80%e9%9c%80%e4%be%9d%e8%b5%96)
-      - [3.2.2 css-loader 规则配置](#322-css-loader-%e8%a7%84%e5%88%99%e9%85%8d%e7%bd%ae)
     - [3.3 安装 vue-loader](#33-%e5%ae%89%e8%a3%85-vue-loader)
-      - [3.3.1 安装 vue-loader 所需依赖](#331-%e5%ae%89%e8%a3%85-vue-loader-%e6%89%80%e9%9c%80%e4%be%9d%e8%b5%96)
-      - [3.3.2 使用](#332-%e4%bd%bf%e7%94%a8)
-      - [3.3.2 创建 App.vue 文件](#332-%e5%88%9b%e5%bb%ba-appvue-%e6%96%87%e4%bb%b6)
-      - [3.3.3 修改 webpack 对应的入口文件(main.js)](#333-%e4%bf%ae%e6%94%b9-webpack-%e5%af%b9%e5%ba%94%e7%9a%84%e5%85%a5%e5%8f%a3%e6%96%87%e4%bb%b6mainjs)
-      - [3.3.4 模板文件(index.html)中添加 DOM 节点 id=&quot;app&quot;](#334-%e6%a8%a1%e6%9d%bf%e6%96%87%e4%bb%b6indexhtml%e4%b8%ad%e6%b7%bb%e5%8a%a0-dom-%e8%8a%82%e7%82%b9-idquotappquot)
     - [3.4 安装 sass-loader](#34-%e5%ae%89%e8%a3%85-sass-loader)
-      - [3.4.1 安装 sass-loader 所需依赖](#341-%e5%ae%89%e8%a3%85-sass-loader-%e6%89%80%e9%9c%80%e4%be%9d%e8%b5%96)
-      - [3.4.2 sass-loader 规则配置](#342-sass-loader-%e8%a7%84%e5%88%99%e9%85%8d%e7%bd%ae)
     - [3.5 安装 less-loader](#35-%e5%ae%89%e8%a3%85-less-loader)
-      - [3.5.1 安装 less-loader 所需依赖](#351-%e5%ae%89%e8%a3%85-less-loader-%e6%89%80%e9%9c%80%e4%be%9d%e8%b5%96)
-      - [3.5.2 less-loader 规则配置](#352-less-loader-%e8%a7%84%e5%88%99%e9%85%8d%e7%bd%ae)
     - [3.6 安装 file-loader](#36-%e5%ae%89%e8%a3%85-file-loader)
-      - [3.6.1 安装 file-loader 所需依赖](#361-%e5%ae%89%e8%a3%85-file-loader-%e6%89%80%e9%9c%80%e4%be%9d%e8%b5%96)
-      - [3.6.2 file-loader 规则配置](#362-file-loader-%e8%a7%84%e5%88%99%e9%85%8d%e7%bd%ae)
+    - [3.7 安装 url-loader](#37-%e5%ae%89%e8%a3%85-url-loader)
   - [4. 安装常用的 Plugins](#4-%e5%ae%89%e8%a3%85%e5%b8%b8%e7%94%a8%e7%9a%84-plugins)
     - [4.1 babel 插件 @babel/plugin-transform-runtime](#41-babel-%e6%8f%92%e4%bb%b6-babelplugin-transform-runtime)
-      - [4.1.1 安装开发环境依赖](#411-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [4.1.2 安装生产环境依赖](#412-%e5%ae%89%e8%a3%85%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [4.1.3 用法](#413-%e7%94%a8%e6%b3%95)
     - [4.2 HTML 模板插件 html-webpack-plugin](#42-html-%e6%a8%a1%e6%9d%bf%e6%8f%92%e4%bb%b6-html-webpack-plugin)
-      - [4.2.1 安装开发环境依赖](#421-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [4.2.2 用法](#422-%e7%94%a8%e6%b3%95)
     - [4.3 清理插件 clean-webpack-plugin](#43-%e6%b8%85%e7%90%86%e6%8f%92%e4%bb%b6-clean-webpack-plugin)
-      - [4.3.1 安装开发环境依赖](#431-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [4.3.2 用法](#432-%e7%94%a8%e6%b3%95)
     - [4.4 热更新 插件 webpack-dev-server](#44-%e7%83%ad%e6%9b%b4%e6%96%b0-%e6%8f%92%e4%bb%b6-webpack-dev-server)
-      - [4.4.1 安装开发环境依赖](#441-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [4.4.2 配置 package.json](#442-%e9%85%8d%e7%bd%ae-packagejson)
-      - [4.4.3 配置 webpack.config.js](#443-%e9%85%8d%e7%bd%ae-webpackconfigjs)
-      - [4.4.4 使用](#444-%e4%bd%bf%e7%94%a8)
     - [4.5 CSS提取插件 mini-css-extract-plugin](#45-css%e6%8f%90%e5%8f%96%e6%8f%92%e4%bb%b6-mini-css-extract-plugin)
-      - [4.5.1 安装开发环境依赖](#451-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [4.5.2 用法](#452-%e7%94%a8%e6%b3%95)
     - [4.6 PostCSS插件 autoprefixer 自动补齐css前缀](#46-postcss%e6%8f%92%e4%bb%b6-autoprefixer-%e8%87%aa%e5%8a%a8%e8%a1%a5%e9%bd%90css%e5%89%8d%e7%bc%80)
-      - [4.6.1 安装开发环境依赖](#461-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [4.6.2 使用](#462-%e4%bd%bf%e7%94%a8)
     - [4.7 安装cross-env指定当前环境](#47-%e5%ae%89%e8%a3%85cross-env%e6%8c%87%e5%ae%9a%e5%bd%93%e5%89%8d%e7%8e%af%e5%a2%83)
-      - [4.7.1 安装开发环境依赖](#471-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [4.7.2 使用](#472-%e4%bd%bf%e7%94%a8)
     - [4.8 压缩 css](#48-%e5%8e%8b%e7%bc%a9-css)
-      - [4.8.1 安装开发环境依赖](#481-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [4.8.2 用法](#482-%e7%94%a8%e6%b3%95)
     - [4.9 移动端 px2rem-loader插件](#49-%e7%a7%bb%e5%8a%a8%e7%ab%af-px2rem-loader%e6%8f%92%e4%bb%b6)
-      - [4.9.1 安装开发环境依赖](#491-%e5%ae%89%e8%a3%85%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [4.9.2 安装生产环境依赖](#492-%e5%ae%89%e8%a3%85%e7%94%9f%e4%ba%a7%e7%8e%af%e5%a2%83%e4%be%9d%e8%b5%96)
-      - [4.9.3 使用](#493-%e4%bd%bf%e7%94%a8)
+    - [4.10 友好错误提示插件 friendly-errors-webpack-plugin](#410-%e5%8f%8b%e5%a5%bd%e9%94%99%e8%af%af%e6%8f%90%e7%a4%ba%e6%8f%92%e4%bb%b6-friendly-errors-webpack-plugin)
+    - [4.11 合并 webpack config 插件 webpack-merge](#411-%e5%90%88%e5%b9%b6-webpack-config-%e6%8f%92%e4%bb%b6-webpack-merge)
+    - [4.12 HTML 插入 css 或者 js 插件html-webpack-tags-plugin](#412-html-%e6%8f%92%e5%85%a5-css-%e6%88%96%e8%80%85-js-%e6%8f%92%e4%bb%b6html-webpack-tags-plugin)
   - [5.性能优化篇](#5%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e7%af%87)
     - [5.1 文件指纹策略](#51-%e6%96%87%e4%bb%b6%e6%8c%87%e7%ba%b9%e7%ad%96%e7%95%a5)
     - [5.2 静态资源内联](#52-%e9%9d%99%e6%80%81%e8%b5%84%e6%ba%90%e5%86%85%e8%81%94)
@@ -70,8 +36,16 @@
     - [5.6 tree shaking](#56-tree-shaking)
     - [5.7 scope hoisting](#57-scope-hoisting)
     - [5.8 代码分割与动态 import](#58-%e4%bb%a3%e7%a0%81%e5%88%86%e5%89%b2%e4%b8%8e%e5%8a%a8%e6%80%81-import)
+    - [5.9 初级分析](#59-%e5%88%9d%e7%ba%a7%e5%88%86%e6%9e%90)
+    - [5.10 速度分析](#510-%e9%80%9f%e5%ba%a6%e5%88%86%e6%9e%90)
+    - [5.11 体积分析](#511-%e4%bd%93%e7%a7%af%e5%88%86%e6%9e%90)
+    - [5.12 提高构建速度](#512-%e6%8f%90%e9%ab%98%e6%9e%84%e5%bb%ba%e9%80%9f%e5%ba%a6)
+      - [5.12.1 使用高版本的 webpack 和 node.js](#5121-%e4%bd%bf%e7%94%a8%e9%ab%98%e7%89%88%e6%9c%ac%e7%9a%84-webpack-%e5%92%8c-nodejs)
+      - [5.12.2 使用多进程/多实例构建](#5122-%e4%bd%bf%e7%94%a8%e5%a4%9a%e8%bf%9b%e7%a8%8b%e5%a4%9a%e5%ae%9e%e4%be%8b%e6%9e%84%e5%bb%ba)
+      - [5.12.3 使用多进程/多实例压缩代码](#5123-%e4%bd%bf%e7%94%a8%e5%a4%9a%e8%bf%9b%e7%a8%8b%e5%a4%9a%e5%ae%9e%e4%be%8b%e5%8e%8b%e7%bc%a9%e4%bb%a3%e7%a0%81)
+      - [5.12.4 DllPlugin 和 DllReferencePlugin 的分包](#5124-dllplugin-%e5%92%8c-dllreferenceplugin-%e7%9a%84%e5%88%86%e5%8c%85)
   - [6. 扩展篇](#6-%e6%89%a9%e5%b1%95%e7%af%87)
-    - [6.1 项目配置 ESlit 和 Prettier](#61-%e9%a1%b9%e7%9b%ae%e9%85%8d%e7%bd%ae-eslit-%e5%92%8c-prettier)
+    - [6.1 项目配置 ESlint 和 Prettier](#61-%e9%a1%b9%e7%9b%ae%e9%85%8d%e7%bd%ae-eslint-%e5%92%8c-prettier)
     - [6.2 在npm上发布基础库或者组件](#62-%e5%9c%a8npm%e4%b8%8a%e5%8f%91%e5%b8%83%e5%9f%ba%e7%a1%80%e5%ba%93%e6%88%96%e8%80%85%e7%bb%84%e4%bb%b6)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -112,7 +86,7 @@ npm i webpack webpack-cli -D
 
 > [参考官网 - Setup - Build systems - Webpack](https://babeljs.io/setup#installation)
 
-#### 3.1.1 安装 babel 所需依赖
+3.1.1 安装 babel 所需依赖
 
 > [参考配置@babel/preset-env](https://babeljs.io/docs/en/babel-preset-env)
 
@@ -120,7 +94,7 @@ npm i webpack webpack-cli -D
 npm i @babel/core @babel/preset-env babel-loader -D
 ```
 
-#### 3.1.2 webpack.config 添加规则
+3.1.2 webpack.config 添加规则
 
 ```js
 module: {
@@ -128,7 +102,7 @@ module: {
 }
 ```
 
-#### 3.1.3 创建 babel 配置文件
+3.1.3 创建 babel 配置文件
 
 > 在项目根目录中创建一个`.babelrc`文件配置，使用默认配置，开启`ES2015+`的语法转换
 
@@ -140,7 +114,7 @@ module: {
 
 ### 3.2 安装 css-loader
 
-#### 3.2.1 安装 css-loader 所需依赖
+3.2.1 安装 css-loader 所需依赖
 
 > 通常`style-loader`和`css-loader`一起使用
 
@@ -148,7 +122,7 @@ module: {
 npm i style-loader css-loader -D
 ```
 
-#### 3.2.2 css-loader 规则配置
+3.2.2 css-loader 规则配置
 
 > loader 执行时链式调用，是从右到左一次调用，因此
 
@@ -168,7 +142,7 @@ npm i style-loader css-loader -D
 
 ### 3.3 安装 vue-loader
 
-#### 3.3.1 安装 vue-loader 所需依赖
+3.3.1 安装 vue-loader 所需依赖
 
 > [参考官网](https://vue-loader.vuejs.org/zh/guide/)
 
@@ -184,7 +158,7 @@ npm i -D vue-loader vue-template-compiler
 npm i vue -S
 ```
 
-#### 3.3.2 使用
+3.3.2 使用
 
 > Vue Loader 的配置和其它的 loader 不太一样。除了通过一条规则将 vue-loader 应用到所有扩展名为 .vue 的文件上之外，请确保在你的 webpack 配置中添加 Vue Loader 的插件：
 
@@ -213,7 +187,7 @@ module.exports = {
 };
 ```
 
-#### 3.3.2 创建 App.vue 文件
+3.3.3 创建 App.vue 文件
 
 ```js
 // App.vue
@@ -234,7 +208,7 @@ export default {
 </script>
 ```
 
-#### 3.3.3 修改 webpack 对应的入口文件(main.js)
+3.3.4 修改 webpack 对应的入口文件(main.js)
 
 ```js
 // main.js
@@ -246,7 +220,7 @@ export default new Vue({
 }).$mount("#app");
 ```
 
-#### 3.3.4 模板文件(index.html)中添加 DOM 节点 id="app"
+3.3.5 模板文件(index.html)中添加 DOM 节点 id="app"
 
 ```html
 <div id="app"></div>
@@ -254,13 +228,13 @@ export default new Vue({
 
 ### 3.4 安装 sass-loader
 
-#### 3.4.1 安装 sass-loader 所需依赖
+3.4.1 安装 sass-loader 所需依赖
 
 ```bash
 npm i sass-loader node-sass -D
 ```
 
-#### 3.4.2 sass-loader 规则配置
+3.4.2 sass-loader 规则配置
 
 ```js
 // webpack.config.js
@@ -278,13 +252,13 @@ npm i sass-loader node-sass -D
 
 ### 3.5 安装 less-loader
 
-#### 3.5.1 安装 less-loader 所需依赖
+3.5.1 安装 less-loader 所需依赖
 
 ```bash
 npm i less less-loader -D
 ```
 
-#### 3.5.2 less-loader 规则配置
+3.5.2 less-loader 规则配置
 
 ```js
 // webpack.config.js
@@ -302,17 +276,17 @@ npm i less less-loader -D
 
 ### 3.6 安装 file-loader
 
-#### 3.6.1 安装 file-loader 所需依赖
+3.6.1 安装 file-loader 所需依赖
 
 ```bash
 npm i file-loader -D
 ```
 
-#### 3.6.2 file-loader 规则配置
+3.6.2 file-loader 规则配置
 
 ```js
 // webpack.config.js
-{
+module.exports = {
   module: {
     rules: [
       {
@@ -325,9 +299,42 @@ npm i file-loader -D
           publicPath: "./images" // 引入的前缀目录名，和outputPath一致
         }
       }
-    ];
+    ]
   }
-}
+};
+```
+
+### 3.7 安装 url-loader
+
+> `url-loader` 工作类似于 `file-loader` ,在 f`ile-loader` 基础上多了额外的功能，根据文件字节的大小，是否使用 `DateURL`(文件内联)
+
+3.7.1 安装
+
+```bash
+npm i url-loader -D
+```
+
+3.7.2 使用
+
+```js
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpe?g|gif|woff|woff2|eot|ttf|otf)$/i,
+        loader: "url-loader",
+        options: {
+          limit: 8192, // 单位字节
+          // 超出limit后的备用加载程序，默认是file-loader
+          fallback: {
+            loader: "file-loader"
+          }
+        }
+      }
+    ]
+  }
+};
 ```
 
 ## 4. 安装常用的 Plugins
@@ -339,13 +346,13 @@ npm i file-loader -D
 > 你也可以使用`@babel/polyfill`,但是会出现一些副作用，比如：添加了一些全局对象、修改了一些原型链、还会覆盖你自定义的`Array.from`方法  
 > 该插件作用是将 `es6` 语法转译的方法，单独抽出来，作为模块导入，避免了出现覆盖的情况，因此这个插件完全替代了`@babel/polyfill`，
 
-#### 4.1.1 安装开发环境依赖
+4.1.1 安装开发环境依赖
 
 ```bash
 npm i @babel/plugin-transform-runtime -D
 ```
 
-#### 4.1.2 安装生产环境依赖
+4.1.2 安装生产环境依赖
 
 从`corejs3`开始才有`Array.includes`的`polyfill`，所以最好安装`corejs3`
 
@@ -353,7 +360,7 @@ npm i @babel/plugin-transform-runtime -D
 npm i @babel/runtime @babel/runtime-corejs3 -S
 ```
 
-#### 4.1.3 用法
+4.1.3 用法
 
 在`.babelrc`配置文件中，添加 `@babel/plugin-transform-runtime`，并指定`corejs` 为 3。
 
@@ -372,13 +379,13 @@ npm i @babel/runtime @babel/runtime-corejs3 -S
 
 ### 4.2 HTML 模板插件 `html-webpack-plugin`
 
-#### 4.2.1 安装开发环境依赖
+4.2.1 安装开发环境依赖
 
 ```bash
 npm i html-webpack-plugin -D
 ```
 
-#### 4.2.2 用法
+4.2.2 用法
 
 ```js
 // webpack.config.js
@@ -403,13 +410,13 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 ### 4.3 清理插件 `clean-webpack-plugin`
 
-#### 4.3.1 安装开发环境依赖
+4.3.1 安装开发环境依赖
 
 ```bash
 npm i clean-webpack-plugin -D
 ```
 
-#### 4.3.2 用法
+4.3.2 用法
 
 ```js
 // webpack.config.js
@@ -425,13 +432,13 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 > [参考链接 2](https://webpack.js.org/guides/hot-module-replacement/)  
 > 提示：另一种实现热更新的方式，可以使用`webpack-dev-middleware` 结合 `node` 服务器(`express`或者`koa`)来实现，这里就跳过了。
 
-#### 4.4.1 安装开发环境依赖
+4.4.1 安装开发环境依赖
 
 ```bash
 npm i webpack-dev-server -D
 ```
 
-#### 4.4.2 配置 package.json
+4.4.2 配置 package.json
 
 ```json
 {
@@ -441,7 +448,7 @@ npm i webpack-dev-server -D
 }
 ```
 
-#### 4.4.3 配置 webpack.config.js
+4.4.3 配置 webpack.config.js
 
 ```js
 {
@@ -458,7 +465,7 @@ npm i webpack-dev-server -D
 };
 ```
 
-#### 4.4.4 使用
+4.4.4 使用
 
 ```bash
 npm run dev
@@ -466,13 +473,13 @@ npm run dev
 
 ### 4.5 `CSS`提取插件 `mini-css-extract-plugin`
 
-#### 4.5.1 安装开发环境依赖
+4.5.1 安装开发环境依赖
 
 ```bash
 npm i mini-css-extract-plugin -D
 ```
 
-#### 4.5.2 用法
+4.5.2 用法
 
 > 该插件是将 css 样式提取出独立的 css 文件，而`style-loader`是将 css 样式直接插入到`head`中，所以需要替换`style-loader`  
 > [参考链接](https://webpack.js.org/plugins/mini-css-extract-plugin/)
@@ -512,13 +519,13 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 ### 4.6 `PostCSS`插件 `autoprefixer` 自动补齐`css`前缀
 
-#### 4.6.1 安装开发环境依赖
+4.6.1 安装开发环境依赖
 
 ```bash
 npm i postcss-loader autoprefixer -D
 ```
 
-#### 4.6.2 使用
+4.6.2 使用
 
 配置 webpack.config.js
 
@@ -559,13 +566,13 @@ not ie <= 8
 > 安装了`cross-env`，就可以在 webpack 编译期间指定开发环境或者是生成环境的处理  
 > e.g. if(process.env.NODE_ENV === "development") { // TODO }
 
-#### 4.7.1 安装开发环境依赖
+4.7.1 安装开发环境依赖
 
 ```bash
 npm i cross-env -D
 ```
 
-#### 4.7.2 使用
+4.7.2 使用
 
 package.json
 
@@ -580,13 +587,13 @@ package.json
 
 ### 4.8 压缩 css
 
-#### 4.8.1 安装开发环境依赖
+4.8.1 安装开发环境依赖
 
 ```bash
 npm i -D optimize-css-assets-webpack-plugin
 ```
 
-#### 4.8.2 用法
+4.8.2 用法
 
 webpack.config.js
 
@@ -600,13 +607,13 @@ const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 ### 4.9 移动端 `px2rem-loader`插件
 
-#### 4.9.1 安装开发环境依赖
+4.9.1 安装开发环境依赖
 
 ```bash
 npm i -D px2rem-loader
 ```
 
-#### 4.9.2 安装生产环境依赖
+4.9.2 安装生产环境依赖
 
 根据设备宽高计算根元素的 fontSize 的大小，这里是手淘的一套成熟的方案。
 
@@ -614,7 +621,7 @@ npm i -D px2rem-loader
 npm i -S lib-flexible
 ```
 
-#### 4.9.3 使用
+4.9.3 使用
 
 webpack.config.js
 
@@ -661,6 +668,74 @@ webpack.config.js
     <div id="app"></div>
   </body>
 </html>
+```
+
+### 4.10 友好错误提示插件 `friendly-errors-webpack-plugin`
+
+4.10.1 安装
+
+```bash
+npm i -D friendly-errors-webpack-plugin
+```
+
+4.10.2 使用
+
+```js
+//webpack.config.js
+var FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
+
+module.exports = {
+  plugins: [new FriendlyErrorsWebpackPlugin()]
+};
+```
+
+### 4.11 合并 `webpack config` 插件 `webpack-merge`
+
+4.11.1 安装
+
+```bash
+npm i -D webpack-merge
+```
+
+4.11.2 使用
+
+```js
+//webpack.dev.js
+const webpackMerge = require("webpack-merge");
+const webpackBaseConfig = require("webpack.base.js");
+
+module.exports = webpackMerge(webpackBaseConfig, {
+  mode: "development",
+  plugins: [
+    //...
+  ]
+});
+```
+
+### 4.12 `HTML` 插入 `css` 或者 `js` 插件`html-webpack-tags-plugin`
+
+> 该插件依赖于 `html-webpack-plugin`，因此必须在 `html-webpack-plugin` 实例化之后再调用。
+> 4.12.1 安装
+
+```bash
+npm i html-webpack-tags-plugin -D
+```
+
+4.12.2 使用
+
+```js
+//webpack.config.js
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackTagsPlugin = require("html-webpack-tags-plugin");
+module.exports = {
+  plugins: [
+    new HtmlWebpackPlugin(),
+    new HtmlWebpackTagsPlugin({
+      tags: ["lib/lib.js"], // script 标签的 src
+      append: false // 在入口js之前插入
+    })
+  ]
+};
 ```
 
 ## 5.性能优化篇
@@ -890,9 +965,209 @@ webpack.config.js
 
 后续在添加路由的时候补充。
 
+### 5.9 初级分析
+
+> webpack 提供打包阶段的分析输出，通过 `stats` 选项配置来指定输出内容
+
+```js
+// webpack.confign.js
+{
+  stats: "error-only";
+}
+```
+
+选项参数配置
+
+|       设置        | 替代设置 | 描述                 |
+| :---------------: | :------: | :------------------- |
+|   'errors-only'   |    无    | 仅当错误时输出       |
+| 'errors-warnings' |    无    | 仅当警告和错误时输出 |
+|     'minimal'     |    无    | 仅当编译和错误时输出 |
+|      'none'       |  false   | 没有任何输出         |
+|     'normal'      |   true   | 标准输出             |
+|     'verbose'     |   none   | 输出所有             |
+
+### 5.10 速度分析
+
+> 使用插件 `speed-measure-webpack-plugin` 帮助我们分析每个 `plugin` 和 `loader` 的执行时间
+
+安装
+
+```bash
+npm i -D speed-measure-webpack-plugin
+```
+
+使用
+
+```js
+// webpack.config.js
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+
+const smp = new SpeedMeasurePlugin();
+
+const webpackConfig = smp.wrap({
+  plugins: [new MyPlugin(), new MyOtherPlugin()]
+});
+```
+
+### 5.11 体积分析
+
+> 使用插件 `webpack-bundle-analyzer`，帮助我们分析第三方模块的大小和业务组件的大小。
+
+> 体积过大的解决方案有：
+>
+> 1. 代码压缩
+> 2. 抽取公共代码
+> 3. 拆包，没有用到的资源不需要打包
+> 4. 采取基础库按需加载
+> 5. 采取组件懒加载
+> 6. 使用基础库 `cdn`
+
+安装
+
+```bash
+npm i -D webpack-bundle-analyzer
+```
+
+使用
+
+```js
+//webpack.config.js
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
+
+module.exports = {
+  plugins: [new BundleAnalyzerPlugin()]
+};
+```
+
+### 5.12 提高构建速度
+
+#### 5.12.1 使用高版本的 `webpack` 和 `node.js`
+
+#### 5.12.2 使用多进程/多实例构建
+
+> 使用`thread-loader`来开启多线程
+
+安装
+
+```bash
+npm i -D thread-loader
+```
+
+使用
+
+```js
+// webpack.config.js
+{
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "thread-loader",
+            options: {
+              workers: 3 //开启3个线程
+            }
+          },
+          "babel-loader"
+        ]
+      }
+    ];
+  }
+}
+```
+
+#### 5.12.3 使用多进程/多实例压缩代码
+
+> 使用 `terser-webpack-plugin` 来压缩代码并通过参数配置开启多线程
+
+安装
+
+```bash
+npm i -D terser-webpack-plugin
+```
+
+使用
+
+```js
+// webpack.config.js
+const TerserPlugin = require("terser-webpack-plugin");
+module.exports = {
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        // 开启线程
+        parallel: 4 // Boolean/Number
+      })
+    ]
+  }
+};
+```
+
+#### 5.12.4 `DllPlugin` 和 `DllReferencePlugin` 的分包
+
+> 使用 `DllPlugin` 和 `DllReferencePlugin` 进行分包处理，将必不可少的第三方基础库或者业务基础库先打包出来，然后项目在构建打包的时候，就不用再打包基础库，只要打包相关业务代码即可，大大提高构建速度。  
+> 因为 `DllPlugin` 和 `DllReferencePlugin` 两个插件是 `webpack` 自带的，所以无需安装下载  
+> 缺点：全量引入，不能移除未引用的代码(tree shaking)
+
+1. 根目录创建 `webpack.dll.js`
+
+> 首先通过 `DllPlugin` 生成基础库 `xxx.dll.js` 和 `manifest.json`
+
+```js
+const path = require("path");
+const webpack = require("webpack");
+
+module.exports = {
+  entry: {
+    library: {
+      // 必不可少的基础库
+      library: ["vue"],
+      // 必不可少的业务基础库(例如初始化脚本等等)
+      business: ["./src/utils/base.js"]
+    }
+  },
+  output: {
+    filename: "[name]_[chunkhash:8].dll.js",
+    path: path.join(__dirname, "build/lib"),
+    library: "[name]"
+  },
+  plugins: [
+    new webpack.DllPlugin({
+      context: path.join(__dirname, "build/lib"),
+      name: "[name]_[hash:8]",
+      path: path.join(__dirname, "build/lib", "[name].json")
+    })
+  ]
+};
+```
+
+2. 生产构建使用`DllReferencePlugin` 声明 `manifest.json` 指向
+
+```js
+// webpack.prod.js
+module.exports = {
+  plugins: [
+    // 有几个入口，就对应几个 DllReferencePlugin 实例
+    new webpack.DllReferencePlugin({
+      context: path.join(__dirname, "build/lib"), // 这里的上下文必须与DllPlugin的上下文统一
+      manifest: require(path.join(__dirname, "build/lib", "library.json"))
+    }),
+    new webpack.DllReferencePlugin({
+      context: path.join(__dirname, "build/lib"),
+      manifest: require(path.join(__dirname, "build/lib", "business.json"))
+    })
+  ]
+};
+```
+
 ## 6. 扩展篇
 
-### 6.1 项目配置 `ESlit` 和 `Prettier`
+### 6.1 项目配置 `ESlint` 和 `Prettier`
 
 > `ESLint` & `Prettier` 的工作描述
 
@@ -914,7 +1189,15 @@ webpack.config.js
 npm i -D eslint babel-eslint vue-eslint-parser@5.0.0 eslint-plugin-vue eslint-config-alloy
 ```
 
-2. 在根目录创建 `.eslintrc.js`，添加插件
+2. 安装 `prettier` 相关插件
+
+> eslint-config-alloy do not include all style-related rules in v3, so there is no need to install eslint-config-prettier. Just install prettier and related VSCode plugins.
+
+```bash
+npm i -D prettier prettier-eslint-cli eslint-plugin-prettier
+```
+
+3. 在根目录创建 `.eslintrc.js`，添加插件
 
 ```js
 module.exports = {
@@ -938,14 +1221,6 @@ module.exports = {
     // Customize your rules
   }
 };
-```
-
-3. 安装 `prettier` 相关插件
-
-> eslint-config-alloy do not include all style-related rules in v3, so there is no need to install eslint-config-prettier. Just install prettier and related VSCode plugins.
-
-```bash
-npm i -D prettier prettier-eslint-cli eslint-plugin-prettier
 ```
 
 4. 在根目录下创建 `.prettierrc.js`
@@ -1019,9 +1294,9 @@ npm i -D terser-webpack-plugin
 
 4. 编写基础库代码
 
-根目录创建 `src` 目录，接着创建 `index.js` 入口文件，导出基础库
+根目录创建 `src` 目录，接着在 `src` 目录创建 `index.js` 文件(用作基础库的入口文件)，导出基础库
 
-6. 配置 webpack
+5. 配置 webpack
 
 根目录创建 webpack.config.js
 
@@ -1054,9 +1329,9 @@ module.exports = {
 };
 ```
 
-1. 创建入口文件
+6. 创建入口文件
 
-`npm` 包默认入口文件是根目录下的 `index.js`，因此在根目录创建 index.js, 导出打包后的基础库压缩文件
+`npm` 包默认入口文件是根目录下的 `index.js`(这里是 `npm` 项目的入口文件)，因此在根目录创建 index.js, 导出打包后的基础库压缩文件
 
 ```js
 // index.js
