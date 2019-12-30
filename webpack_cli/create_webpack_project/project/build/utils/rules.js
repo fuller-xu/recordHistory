@@ -38,7 +38,8 @@ module.exports = {
     {
       test: /\.m?js$/,
       exclude: /(node_modules|bower_components)/,
-      use: [threadLoader, 'babel-loader']
+      //   use: [threadLoader, 'babel-loader']
+      use: [threadLoader, 'babel-loader?cacheDirectory=true']
     },
     {
       test: /\.vue$/,

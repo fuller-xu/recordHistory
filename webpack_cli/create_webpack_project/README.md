@@ -26,7 +26,9 @@
     - [4.9 移动端 px2rem-loader插件](#49-%e7%a7%bb%e5%8a%a8%e7%ab%af-px2rem-loader%e6%8f%92%e4%bb%b6)
     - [4.10 友好错误提示插件 friendly-errors-webpack-plugin](#410-%e5%8f%8b%e5%a5%bd%e9%94%99%e8%af%af%e6%8f%90%e7%a4%ba%e6%8f%92%e4%bb%b6-friendly-errors-webpack-plugin)
     - [4.11 合并 webpack config 插件 webpack-merge](#411-%e5%90%88%e5%b9%b6-webpack-config-%e6%8f%92%e4%bb%b6-webpack-merge)
-    - [4.12 HTML 插入 css 或者 js 插件html-webpack-tags-plugin](#412-html-%e6%8f%92%e5%85%a5-css-%e6%88%96%e8%80%85-js-%e6%8f%92%e4%bb%b6html-webpack-tags-plugin)
+    - [4.12 拷贝资源插件 copy-webpack-plugin](#412-%e6%8b%b7%e8%b4%9d%e8%b5%84%e6%ba%90%e6%8f%92%e4%bb%b6-copy-webpack-plugin)
+    - [4.13 HTML 插入 css 或者 js 插件html-webpack-tags-plugin](#413-html-%e6%8f%92%e5%85%a5-css-%e6%88%96%e8%80%85-js-%e6%8f%92%e4%bb%b6html-webpack-tags-plugin)
+    - [4.14 tree shaking CSS 插件 purgecss-webpack-plugin (vue 文件暂不可用)](#414-tree-shaking-css-%e6%8f%92%e4%bb%b6-purgecss-webpack-plugin-vue-%e6%96%87%e4%bb%b6%e6%9a%82%e4%b8%8d%e5%8f%af%e7%94%a8)
   - [5.性能优化篇](#5%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e7%af%87)
     - [5.1 文件指纹策略](#51-%e6%96%87%e4%bb%b6%e6%8c%87%e7%ba%b9%e7%ad%96%e7%95%a5)
     - [5.2 静态资源内联](#52-%e9%9d%99%e6%80%81%e8%b5%84%e6%ba%90%e5%86%85%e8%81%94)
@@ -44,6 +46,8 @@
       - [5.12.2 使用多进程/多实例构建](#5122-%e4%bd%bf%e7%94%a8%e5%a4%9a%e8%bf%9b%e7%a8%8b%e5%a4%9a%e5%ae%9e%e4%be%8b%e6%9e%84%e5%bb%ba)
       - [5.12.3 使用多进程/多实例压缩代码](#5123-%e4%bd%bf%e7%94%a8%e5%a4%9a%e8%bf%9b%e7%a8%8b%e5%a4%9a%e5%ae%9e%e4%be%8b%e5%8e%8b%e7%bc%a9%e4%bb%a3%e7%a0%81)
       - [5.12.4 DllPlugin 和 DllReferencePlugin 的分包](#5124-dllplugin-%e5%92%8c-dllreferenceplugin-%e7%9a%84%e5%88%86%e5%8c%85)
+      - [5.12.5 利用缓存机制提升二次构建速度](#5125-%e5%88%a9%e7%94%a8%e7%bc%93%e5%ad%98%e6%9c%ba%e5%88%b6%e6%8f%90%e5%8d%87%e4%ba%8c%e6%ac%a1%e6%9e%84%e5%bb%ba%e9%80%9f%e5%ba%a6)
+      - [5.12.6 减少文件搜索范围](#5126-%e5%87%8f%e5%b0%91%e6%96%87%e4%bb%b6%e6%90%9c%e7%b4%a2%e8%8c%83%e5%9b%b4)
   - [6. 扩展篇](#6-%e6%89%a9%e5%b1%95%e7%af%87)
     - [6.1 项目配置 ESlint 和 Prettier](#61-%e9%a1%b9%e7%9b%ae%e9%85%8d%e7%bd%ae-eslint-%e5%92%8c-prettier)
     - [6.2 在npm上发布基础库或者组件](#62-%e5%9c%a8npm%e4%b8%8a%e5%8f%91%e5%b8%83%e5%9f%ba%e7%a1%80%e5%ba%93%e6%88%96%e8%80%85%e7%bb%84%e4%bb%b6)
@@ -98,7 +102,7 @@ npm i @babel/core @babel/preset-env babel-loader -D
 
 ```js
 module: {
-  rules: [{ test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }];
+  rules: [{ test: /\.js$/, loader: "babel-loader" }];
 }
 ```
 
@@ -712,16 +716,44 @@ module.exports = webpackMerge(webpackBaseConfig, {
 });
 ```
 
-### 4.12 `HTML` 插入 `css` 或者 `js` 插件`html-webpack-tags-plugin`
+### 4.12 拷贝资源插件 `copy-webpack-plugin`
+
+4.12.1 安装
+
+```bash
+npm i copy-webpack-plugin -D
+```
+
+4.12.2 使用
+
+```js
+// webpack.config.js
+const path = require("path");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+module.exports = {
+  plugins: [
+    // 将依赖包直接拷贝到打包目录中
+    new CopyWebpackPlugin([
+      {
+        from: path.join(__dirname, "node_modules/lib.js"),
+        to: path.join(__dirname, "dist/lib.js")
+      }
+    ])
+  ]
+};
+```
+
+### 4.13 `HTML` 插入 `css` 或者 `js` 插件`html-webpack-tags-plugin`
 
 > 该插件依赖于 `html-webpack-plugin`，因此必须在 `html-webpack-plugin` 实例化之后再调用。
-> 4.12.1 安装
+
+4.13.1 安装
 
 ```bash
 npm i html-webpack-tags-plugin -D
 ```
 
-4.12.2 使用
+4.13.2 使用
 
 ```js
 //webpack.config.js
@@ -731,8 +763,40 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin(),
     new HtmlWebpackTagsPlugin({
-      tags: ["lib/lib.js"], // script 标签的 src
-      append: false // 在入口js之前插入
+      tags: ["lib/lib.js"], // 默认资源路径是webpack输出目录(dist) 添加到script 标签的 src
+      append: false // 在入口js之前插入,如果为true，会在之后插入
+    })
+  ]
+};
+```
+
+### 4.14 tree shaking CSS 插件 `purgecss-webpack-plugin` (`vue` 文件暂不可用)
+
+1. 安装
+
+```bash
+npm i purgecss-webpack-plugin -D
+```
+
+2. 使用
+
+```js
+// webpack.config.js
+const path = require("path");
+const glob = require("glob");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const PurgecssPlugin = require("purgecss-webpack-plugin");
+
+const PATHS = {
+  src: path.join(__dirname, "src")
+};
+module.exports = {
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "[name].css"
+    }),
+    new PurgecssPlugin({
+      paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true })
     })
   ]
 };
@@ -1064,7 +1128,6 @@ npm i -D thread-loader
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
         use: [
           {
             loader: "thread-loader",
@@ -1112,13 +1175,14 @@ module.exports = {
 
 > 使用 `DllPlugin` 和 `DllReferencePlugin` 进行分包处理，将必不可少的第三方基础库或者业务基础库先打包出来，然后项目在构建打包的时候，就不用再打包基础库，只要打包相关业务代码即可，大大提高构建速度。  
 > 因为 `DllPlugin` 和 `DllReferencePlugin` 两个插件是 `webpack` 自带的，所以无需安装下载  
-> 缺点：全量引入，不能移除未引用的代码(tree shaking)
+> 缺点：全量打包引入，不能移除未引用的代码(tree shaking)
 
 1. 根目录创建 `webpack.dll.js`
 
 > 首先通过 `DllPlugin` 生成基础库 `xxx.dll.js` 和 `manifest.json`
 
 ```js
+// webpack.dll.js
 const path = require("path");
 const webpack = require("webpack");
 
@@ -1134,12 +1198,12 @@ module.exports = {
   output: {
     filename: "[name]_[chunkhash:8].dll.js",
     path: path.join(__dirname, "build/lib"),
-    library: "[name]"
+    library: "[name]_[chunkhash:8]"
   },
   plugins: [
     new webpack.DllPlugin({
       context: path.join(__dirname, "build/lib"),
-      name: "[name]_[hash:8]",
+      name: "[name]_[chunkhash:8]", // 需要与输入的全局变量名称一样(output-library)
       path: path.join(__dirname, "build/lib", "[name].json")
     })
   ]
@@ -1162,6 +1226,97 @@ module.exports = {
       manifest: require(path.join(__dirname, "build/lib", "business.json"))
     })
   ]
+};
+```
+
+#### 5.12.5 利用缓存机制提升二次构建速度
+
+1. 开启 `babel-loader` 缓存
+
+```js
+//webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        use: ["babel-loader?cacheDirectory=true"]
+      }
+    ]
+  }
+};
+```
+
+2. 开启 `terser-webpack-plugin` 压缩缓存
+
+```js
+//webpack.config.js
+module.exports = {
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        parallel: 4,
+        cache: true // 开启构建缓存
+      })
+    ]
+  }
+};
+```
+
+3. 使用插件 `hard-source-webpack-plugin` 缓存
+
+安装
+
+```bash
+npm i -D hard-source-webpack-plugin
+```
+
+使用
+
+```js
+// webpack.config.js
+const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+
+module.exports = {
+  plugins: [new HardSourceWebpackPlugin()]
+};
+```
+
+#### 5.12.6 减少文件搜索范围
+
+1. `babel-loader` 解析缩小范围
+2. 优化 `resolve.modules` 配置(减少模块搜索层级)
+3. 优化 `resolve.mainFields` 配置
+4. 优化 `resolve.extensions` 配置
+5. 合理使用 `alias`
+
+```js
+//webpack.config.js
+const path = require("path");
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        // 只编译src目录下的文件
+        include: path.join(__dirname, "src"),
+        use: ["babel-loader"]
+      }
+    ]
+  },
+  resolve: {
+    alias: {
+      // 指定vue的路径
+      vue: path.resolve(__dirname, "./node_modules/vue/dist/vue.min.js")
+    },
+    // 第三方模块 指定在node_modules目录中查找
+    modules: [path.resolve(__dirname, "node_modules")],
+    // 后缀名只查找.js的文件
+    extensions: [".js"],
+    // 入口文件名包含main的文件
+    mainFields: ["main"]
+  }
 };
 ```
 

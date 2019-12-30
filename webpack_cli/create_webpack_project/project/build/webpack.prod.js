@@ -3,6 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
@@ -23,7 +24,8 @@ module.exports =
       minimize: true,
       minimizer: [
         new TerserPlugin({
-          parallel: 4 // Boolean/Number
+          parallel: 4, // Boolean/Number
+          cache: true // 开启构建缓存
         })
       ],
       // 提取模块
@@ -51,7 +53,7 @@ module.exports =
       new OptimizeCssAssetsPlugin(),
       new CopyWebpackPlugin([{ from: relativeDllLibraryPath(), to: relativeRootPath('dist/lib') }]),
       ...DllReferencePlugins,
-      ...HtmlWebpackTagsPlugins
+      ...HtmlWebpackTagsPlugins,
       //   new HtmlWebpackExternalsPlugin({
       //     externals: [
       //       {
@@ -91,7 +93,8 @@ module.exports =
       //       }
       //     ]
       //   })
-      // new BundleAnalyzerPlugin()
+      new BundleAnalyzerPlugin(),
+      new HardSourceWebpackPlugin()
     ]
   });
 // );

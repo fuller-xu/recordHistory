@@ -1,12 +1,13 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
+const glob = require('glob');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const PurgecssPlugin = require('purgecss-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const { path, rootPath, relativeRootPath } = require('./utils/path');
 const { rules } = require('./utils/rules');
 const { alias } = require('./utils/alias');
-const { relativeDllLibraryPath } = require('./utils/dll');
 // 多入口配置
 // const { multiplePagesConfigure } = require('./utils/multiple_pages_entry');
 // const { entry, htmlWebpackPlugins } = multiplePagesConfigure();
@@ -27,6 +28,12 @@ module.exports = {
   },
   resolve: {
     alias
+    // 第三方模块 指定在node_modules目录中查找
+    // modules: [path.resolve(__dirname, 'node_modules')],
+    // 后缀名只查找.js的文件
+    // extensions: ['.js', '.vue', '.json'],
+    // 入口文件名包含main的文件
+    // mainFields: ['main', 'index']
   },
   module: {
     rules
@@ -57,6 +64,9 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/[name]_[contenthash:8].css',
       chunkFilename: 'css/[id]_[contenthash:8].css'
+    }),
+    new PurgecssPlugin({
+      paths: glob.sync(relativeRootPath('src/**/*'), { nodir: true })
     })
   ]
 };
