@@ -1,8 +1,3 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
-
 - [从零架构webpack + vue 项目](#%e4%bb%8e%e9%9b%b6%e6%9e%b6%e6%9e%84webpack--vue-%e9%a1%b9%e7%9b%ae)
   - [1. 安装 webpack](#1-%e5%ae%89%e8%a3%85-webpack)
   - [2. mode 详解](#2-mode-%e8%af%a6%e8%a7%a3)
@@ -29,6 +24,8 @@
     - [4.12 拷贝资源插件 copy-webpack-plugin](#412-%e6%8b%b7%e8%b4%9d%e8%b5%84%e6%ba%90%e6%8f%92%e4%bb%b6-copy-webpack-plugin)
     - [4.13 HTML 插入 css 或者 js 插件html-webpack-tags-plugin](#413-html-%e6%8f%92%e5%85%a5-css-%e6%88%96%e8%80%85-js-%e6%8f%92%e4%bb%b6html-webpack-tags-plugin)
     - [4.14 tree shaking CSS 插件 purgecss-webpack-plugin (vue 文件暂不可用)](#414-tree-shaking-css-%e6%8f%92%e4%bb%b6-purgecss-webpack-plugin-vue-%e6%96%87%e4%bb%b6%e6%9a%82%e4%b8%8d%e5%8f%af%e7%94%a8)
+    - [4.15 图片压缩 image-webpack-loader](#415-%e5%9b%be%e7%89%87%e5%8e%8b%e7%bc%a9-image-webpack-loader)
+    - [4.16 动态 polyfill](#416-%e5%8a%a8%e6%80%81-polyfill)
   - [5.性能优化篇](#5%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%96%e7%af%87)
     - [5.1 文件指纹策略](#51-%e6%96%87%e4%bb%b6%e6%8c%87%e7%ba%b9%e7%ad%96%e7%95%a5)
     - [5.2 静态资源内联](#52-%e9%9d%99%e6%80%81%e8%b5%84%e6%ba%90%e5%86%85%e8%81%94)
@@ -51,12 +48,12 @@
   - [6. 扩展篇](#6-%e6%89%a9%e5%b1%95%e7%af%87)
     - [6.1 项目配置 ESlint 和 Prettier](#61-%e9%a1%b9%e7%9b%ae%e9%85%8d%e7%bd%ae-eslint-%e5%92%8c-prettier)
     - [6.2 在npm上发布基础库或者组件](#62-%e5%9c%a8npm%e4%b8%8a%e5%8f%91%e5%b8%83%e5%9f%ba%e7%a1%80%e5%ba%93%e6%88%96%e8%80%85%e7%bb%84%e4%bb%b6)
+  - [7. VUE 相关生态](#7-vue-%e7%9b%b8%e5%85%b3%e7%94%9f%e6%80%81)
+    - [7.1 vue-router](#71-vue-router)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # 从零架构`webpack` + `vue` 项目
-
-[toc]
 
 > 前提条件：需要安装`node`,这里是使用`nvm`安装`node`，当然你也可以用其他方式安装。
 >
@@ -80,11 +77,13 @@ npm i webpack webpack-cli -D
 
 ## 2. mode 详解
 
-![mode_comments](https://jeno.oss-cn-shanghai.aliyuncs.com/web/webpack/mode_comments.png)
+|     选项      | 描述                                                                                                                                                                                        |
+| :-----------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 'development' | 开启 `NamedChunksPlugin` 和 `NamedModulesPlugin`                                                                                                                                            |
+| 'production'  | 开启 `FlagDependencyUsagePlugin` , `FlagIncludedChunksPlugin` , `ModuleConcatenationPlugin` , `NoEmitOnErrorsPlugin` , `OccurrenceOrderPlugin` , `SideEffectsFlagPlugin` and `TerserPlugin` |
+|    'none'     | 不开启任何优化选项                                                                                                                                                                          |
 
 ## 3. 安装常用的 Loaders
-
-![loaders](https://jeno.oss-cn-shanghai.aliyuncs.com/web/webpack/css_loaders.png)
 
 ### 3.1 安装 babel-loader —— 启用 js 新语法的编译
 
@@ -802,6 +801,76 @@ module.exports = {
 };
 ```
 
+### 4.15 图片压缩 `image-webpack-loader`
+
+> 随附以下优化器，默认情况下会自动启用这些优化器：
+
+- [mozjpeg](https://github.com/imagemin/imagemin-mozjpeg) — _压缩 JPEG 图像_
+- [optipng](https://github.com/kevva/imagemin-optipng) — _压缩 PNG 图像_
+- [pngquant](https://github.com/imagemin/imagemin-pngquant) — _压缩 PNG 图像_
+- [svgo](https://github.com/kevva/imagemin-svgo) — _压缩 SVG 图像_
+- [gifsicle](https://github.com/kevva/imagemin-gifsicle) — _压缩 GIF 图像_
+
+> 可选的优化器：
+
+- [webp](https://github.com/imagemin/imagemin-webp) — _将 JPG 和 PNG 图像压缩为 WEBP_
+
+可以通过指定禁用默认优化器 `optimizer.enabled: false`, 而只需将其放在选项中即可启用可选优化器
+
+1. 安装
+
+```bash
+npm install image-webpack-loader --save-dev
+```
+
+2. 使用
+
+```js
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
+          "file-loader",
+          {
+            loader: "image-webpack-loader",
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65
+              },
+              // optipng.enabled: false will disable optipng
+              optipng: {
+                enabled: false
+              },
+              pngquant: {
+                quality: [0.65, 0.9],
+                speed: 4
+              },
+              gifsicle: {
+                interlaced: false
+              },
+              // the webp option will enable WEBP
+              webp: {
+                quality: 75
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+};
+```
+
+### 4.16 动态 polyfill
+
+> 使用 [cdn](https://polyfill.io/v3/polyfill.min.js)，会根据请求浏览器的 `User Agent` 的数据去判断该浏览器不支持的方法，最后返回不支持方法的 `polyfill` 转译代码  
+> [参考 polyfill.io API](https://polyfill.io/v3/api/)  
+> [附带阿里 cdn](https://polyfill.alicdn.com/polyfill.min.js)
+
 ## 5.性能优化篇
 
 ### 5.1 文件指纹策略
@@ -1511,4 +1580,76 @@ package.json
 
 ```bash
 npm publish
+```
+
+## 7. `VUE` 相关生态
+
+### 7.1 `vue-router`
+
+1. 安装
+
+```bash
+npm install vue-router
+```
+
+2. 基本用法
+
+src/router/index.js
+
+```js
+import Home from "@/components/Home.vue";
+import Vue from "vue";
+import VueRouter from "vue-router";
+
+const routes = [
+  {
+    path: "/",
+    component: Home,
+    redirect: "/vueMessage",
+    // 嵌套路由
+    children: [
+      {
+        path: "/vueMessage",
+        // 动态路由配置
+        // webpack 提供了分类打包的策略，添加注释 /* webpackChunkName: "message" */ 来指定打包的文件名
+        component: () =>
+          import(
+            /* webpackChunkName: "message" */ "@/components/VueMessage.vue"
+          )
+      }
+    ]
+  },
+  // 下面是一些高级传参匹配模式的例子:
+  // 会匹配以 `/user-` 开头的任意路径
+  { path: "/user-*" },
+  // params are denoted with a colon ":"
+  { path: "/params/:foo/:bar" },
+  // a param can be made optional by adding "?"
+  { path: "/optional-params/:foo?" },
+  // a param can be followed by a regex pattern in parens
+  // this route will only be matched if :id is all numbers
+  { path: "/params-with-regex/:id(\\d+)" },
+  // asterisk can match anything
+  { path: "/asterisk/*" },
+  // make part of the path optional by wrapping with parens and add "?"
+  { path: "/optional-group/(foo/)?bar" }
+];
+
+Vue.use(VueRouter);
+export default new VueRouter({
+  routes
+});
+```
+
+项目入口文件 main.js
+
+```js
+import router from "@/router";
+import Vue from "vue";
+import App from "App.vue";
+
+export default new Vue({
+  router,
+  render: h => h(App)
+}).$mount("#app");
 ```

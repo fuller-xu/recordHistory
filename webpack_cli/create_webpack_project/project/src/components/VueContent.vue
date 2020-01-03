@@ -2,14 +2,14 @@
 export default {
   methods: {
     goto() {
-      this.$router.push({ path: '/vueContent' });
+      this.$router.push({ path: '/vueMessage' });
     }
   }
 };
 </script>
 <template>
   <div class="use-css" @click="goto">
-    <button>我是组件</button>
+    <button>我是内容</button>
   </div>
 </template>
 

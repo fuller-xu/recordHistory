@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config build/webpack.prod.js",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.dev.js --host 0.0.0.0 --open",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --config build/webpack.dev.js",
     "dll": "cross-env NODE_ENV=production webpack --config build/webpack.dll.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,9 +24,10 @@
     "cross-env": "^6.0.3",
     "css-loader": "^3.4.0",
     "eslint": "^6.8.0",
-    "eslint-config-alloy": "^3.4.0",
+    "eslint-config-alloy": "^3.5.0",
+    "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-vue": "^6.1.1",
+    "eslint-plugin-vue": "^6.1.2",
     "file-loader": "^5.0.2",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "glob": "^7.1.6",
@@ -34,6 +35,7 @@
     "html-webpack-externals-plugin": "^3.8.0",
     "html-webpack-plugin": "^3.2.0",
     "html-webpack-tags-plugin": "^2.0.17",
+    "image-webpack-loader": "^6.0.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.9.0",
@@ -64,8 +66,8 @@
     "@babel/runtime": "^7.7.7",
     "@babel/runtime-corejs3": "^7.7.7",
     "data-pick": "^1.5.3",
-    "eslint-config-prettier": "^6.9.0",
     "lib-flexible": "^0.3.2",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-router": "^3.1.3"
   }
 }

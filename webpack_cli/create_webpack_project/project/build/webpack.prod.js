@@ -16,6 +16,8 @@ const { mode } = require('./utils/mode');
 const { multipleDLLEntryConfigure } = require('./utils/multiple_dll_entry');
 const { relativeDllLibraryPath } = require('./utils/dll');
 const { DllReferencePlugins, HtmlWebpackTagsPlugins } = multipleDLLEntryConfigure();
+const CustomPlugin = require('./utils/custom_plugin');
+
 module.exports =
   // smp.wrap(
   webpackMerge(webpackBaseConfig, {
@@ -93,8 +95,14 @@ module.exports =
       //       }
       //     ]
       //   })
-      new BundleAnalyzerPlugin(),
-      new HardSourceWebpackPlugin()
+
+      new HardSourceWebpackPlugin(),
+      //   new BundleAnalyzerPlugin(),
+      new CustomPlugin(),
+      function(compiler) {
+        // 手动执行webpack plugin
+        new BundleAnalyzerPlugin().apply(compiler);
+      }
     ]
   });
 // );
