@@ -50,6 +50,7 @@
     - [6.2 在npm上发布基础库或者组件](#62-%e5%9c%a8npm%e4%b8%8a%e5%8f%91%e5%b8%83%e5%9f%ba%e7%a1%80%e5%ba%93%e6%88%96%e8%80%85%e7%bb%84%e4%bb%b6)
   - [7. VUE 相关生态](#7-vue-%e7%9b%b8%e5%85%b3%e7%94%9f%e6%80%81)
     - [7.1 vue-router](#71-vue-router)
+    - [7.2 vuex](#72-vuex)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -1652,4 +1653,91 @@ export default new Vue({
   router,
   render: h => h(App)
 }).$mount("#app");
+```
+
+### 7.2 `vuex`
+
+1. 安装
+
+```bash
+npm install vuex
+```
+
+2. 基本用法
+
+> 推荐中大型的项目使用常量命名 `mutation` 的方法名。
+> 推荐参照官方的严格模式，使用 `mutation` 函数来改变状态
+> 推荐常量的值就是该常量名的字符串，方便在模板中使用 `mutation`。(个人喜好)
+
+mutation_types.js
+
+```js
+export const MUTATION_INCREMENT = "MUTATION_INCREMENT";
+```
+
+创建 `store` 入口文件，src/store/index.js
+
+```js
+import Vue from "vue";
+import Vuex from "vuex";
+import { MUTATION_INCREMENT } from "./mutation_types";
+Vue.use(Vuex);
+
+const moduleA = {
+  namespaced: true,
+  state: { childName: "我是子模块" }
+  //   mutations: { ... },
+  //   actions: { ... },
+  //   getters: { ... }
+};
+export default new Vuex.Store({
+  modules: {
+    child: moduleA
+  },
+  state: {
+    count: 0,
+    username: "admin"
+  },
+  // 类似于计算属性
+  getters: {
+    loginName(state) {
+      return state.username;
+    }
+  },
+  mutations: {
+    [MUTATION_INCREMENT](state) {
+      state.count++;
+    }
+  },
+  // 异步操作的方法，放在这里
+  actions: {}
+});
+```
+
+模板中使用
+
+```html
+<script>
+  import { mapState, mapMutations, mapGetters } from "vuex";
+
+  export default {
+    computed: {
+      ...mapState(["count"]),
+      ...mapGetters(["loginName"]),
+      // 开启命名空间后 child 对应store/modules 的 key名
+      ...mapState("child", ["childName"])
+    },
+    methods: {
+      ...mapMutations(["MUTATION_INCREMENT"])
+    }
+  };
+</script>
+<template>
+  <div>
+    <button @click="MUTATION_INCREMENT">增加</button>
+    <div>{{ count }}</div>
+    <div>{{ loginName }}</div>
+    <div>{{ childName }}</div>
+  </div>
+</template>
 ```
