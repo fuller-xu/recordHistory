@@ -1665,8 +1665,8 @@ npm install vuex
 
 2. 基本用法
 
-> 推荐中大型的项目使用常量命名 `mutation` 的方法名。
-> 推荐参照官方的严格模式，使用 `mutation` 函数来改变状态
+> 推荐中大型的项目使用常量命名 `mutation` 的方法名。  
+> 推荐参照官方的严格模式，使用 `mutation` 函数来改变状态  
 > 推荐常量的值就是该常量名的字符串，方便在模板中使用 `mutation`。(个人喜好)
 
 mutation_types.js
