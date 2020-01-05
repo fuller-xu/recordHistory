@@ -51,6 +51,7 @@
   - [7. VUE 相关生态](#7-vue-%e7%9b%b8%e5%85%b3%e7%94%9f%e6%80%81)
     - [7.1 vue-router](#71-vue-router)
     - [7.2 vuex](#72-vuex)
+    - [7.2 Vuex 持久化插件 vuex-persistedstate](#72-vuex-%e6%8c%81%e4%b9%85%e5%8c%96%e6%8f%92%e4%bb%b6-vuex-persistedstate)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -1097,8 +1098,6 @@ webpack.config.js
 
 ### 5.8 代码分割与动态 `import`
 
-后续在添加路由的时候补充。
-
 ### 5.9 初级分析
 
 > webpack 提供打包阶段的分析输出，通过 `stats` 选项配置来指定输出内容
@@ -1665,11 +1664,11 @@ npm install vuex
 
 2. 基本用法
 
-> 推荐中大型的项目使用常量命名 `mutation` 的方法名。  
-> 推荐参照官方的严格模式，使用 `mutation` 函数来改变状态  
-> 推荐常量的值就是该常量名的字符串，方便在模板中使用 `mutation`。(个人喜好)
+> 推荐中大型的项目使用常量命名 `mutation` 的函数名。  
+> 推荐使用官方的严格模式，使用 `mutation` 函数来改变 `state` 状态  
+> 推荐在模板中 `mutation` 使用别名的方式(个人喜好)，参考以下代码
 
-mutation_types.js
+创建 src/store/mutation_types.js
 
 ```js
 export const MUTATION_INCREMENT = "MUTATION_INCREMENT";
@@ -1681,6 +1680,7 @@ export const MUTATION_INCREMENT = "MUTATION_INCREMENT";
 import Vue from "vue";
 import Vuex from "vuex";
 import { MUTATION_INCREMENT } from "./mutation_types";
+
 Vue.use(Vuex);
 
 const moduleA = {
@@ -1694,6 +1694,8 @@ export default new Vuex.Store({
   modules: {
     child: moduleA
   },
+  // 允许使用插件在初始化后来执行一些业务逻辑
+  plugins: [],
   state: {
     count: 0,
     username: "admin"
@@ -1714,11 +1716,25 @@ export default new Vuex.Store({
 });
 ```
 
-模板中使用
+在应用入口 main.js ,添加 `store`
+
+```js
+import store from "@/store";
+import Vue from "vue";
+import App from "./App.vue";
+
+export default new Vue({
+  store,
+  render: h => h(App)
+}).$mount("#app");
+```
+
+vue 单文件中使用
 
 ```html
 <script>
   import { mapState, mapMutations, mapGetters } from "vuex";
+  import { MUTATION_INCREMENT } from "@/store/mutation_types.js";
 
   export default {
     computed: {
@@ -1728,7 +1744,8 @@ export default new Vuex.Store({
       ...mapState("child", ["childName"])
     },
     methods: {
-      ...mapMutations(["MUTATION_INCREMENT"])
+      //使用别名
+      ...mapMutations({ MUTATION_INCREMENT })
     }
   };
 </script>
@@ -1740,4 +1757,38 @@ export default new Vuex.Store({
     <div>{{ childName }}</div>
   </div>
 </template>
+```
+
+### 7.2 `Vuex` 持久化插件 `vuex-persistedstate`
+
+> 避免用户刷新页面，`store` 数据丢失  
+> [参考链接](https://github.com/robinvdvleuten/vuex-persistedstate#readme)
+
+1. 安装
+
+```bash
+npm i -S vuex-persistedstate
+```
+
+2.  使用
+
+```js
+import createPersistedState from "vuex-persistedstate";
+import CustomStorage from "@/cache/custom_storage.js";
+
+const store = new Vuex.Store({
+  // ...
+  plugins: [
+    createPersistedState({
+      // 默认localStorage
+      storage: window.sessionStorage,
+      // or use custom storage
+      storage: {
+        getItem: key => CustomStorage.get(key),
+        setItem: (key, value) => CustomStorage.set(key, value),
+        removeItem: key => CustomStorage.remove(key)
+      }
+    })
+  ]
+});
 ```

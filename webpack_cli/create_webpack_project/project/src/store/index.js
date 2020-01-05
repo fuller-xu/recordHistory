@@ -1,17 +1,29 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { MUTATION_INCREMENT } from './mutation_types';
+import createPersistedState from 'vuex-persistedstate';
+import { MUTATION_CHILD_CHANGE, MUTATION_INCREMENT } from './mutation_types';
 Vue.use(Vuex);
 
 const moduleA = {
   namespaced: true,
-  state: { childName: '我是子模块' }
+  state: { childName: '我是子模块' },
+  mutations: {
+    [MUTATION_CHILD_CHANGE](state, data) {
+      state.childName = data;
+    }
+  }
 };
 
 export default new Vuex.Store({
   modules: {
     child: moduleA
   },
+  plugins: [
+    createPersistedState({
+      // 默认localStorage
+      storage: window.sessionStorage
+    })
+  ],
   state: {
     count: 0,
     username: 'admin'
@@ -23,7 +35,6 @@ export default new Vuex.Store({
   },
   mutations: {
     [MUTATION_INCREMENT](state) {
-      console.log(123213);
       state.count++;
     }
   }

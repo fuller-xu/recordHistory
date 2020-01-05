@@ -1,21 +1,26 @@
 <script>
 import { dataPick } from 'data-pick';
-import { getContent } from '@/utils/content';
+import('data-pick').then((res) => {
+  console.log(res);
+  const jsonClass = {
+    id: null,
+    age: null
+  };
+  const data = {
+    id: 1,
+    age: 2,
+    hight: 3,
+    abc: 4
+  };
+  console.log(Object.keys(dataPick(data, jsonClass)));
+});
+import('@/utils/content').then((res) => {
+  console.log(res);
+  let { getContent } = res;
+  console.log(getContent('lele'));
+});
 console.log([1, 2].includes(2));
-console.log(dataPick);
-const jsonClass = {
-  id: null,
-  age: null
-};
-const data = {
-  id: 1,
-  age: 2,
-  hight: 3,
-  abc: 4
-};
-console.log(111);
-console.log(Object.keys(dataPick(data, jsonClass)));
-console.log(getContent('lele'));
+
 export default {
   components: {},
   data() {
